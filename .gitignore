@@ -1,0 +1,7 @@
+raasid-env/
+__pycache__/
+.DS_Store  # Mac users
+*.log
+
+
+

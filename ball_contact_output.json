@@ -1,0 +1,9 @@
+[
+    {
+        "frame": 2,
+        "handball_detected": true,
+        "force": 3.5,
+        "duration": 0.15,
+        "sound_peak": 0.8
+    }
+]

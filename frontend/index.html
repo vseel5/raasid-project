@@ -1,0 +1,51 @@
+<!-- frontend/index.html -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Raasid Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Raasid Admin Dashboard</h1>
+
+  <div class="container">
+    <section id="status">
+      <h3>System Status</h3>
+      <button onclick="checkStatus()">Check API</button>
+      <p id="api-status">Not checked</p>
+    </section>
+
+    <section id="logs">
+      <h3>AI Decision Logs</h3>
+      <button onclick="loadLogs()">Load Logs</button>
+      <pre id="log-output">No data yet</pre>
+    </section>
+
+    <section id="var-override">
+      <h3>VAR Override</h3>
+      <input type="number" id="frame" placeholder="Frame Number">
+      <input type="text" id="override" placeholder="New Decision">
+      <button onclick="submitOverride()">Submit Override</button>
+      <p id="override-status"></p>
+    </section>
+
+    <section id="output">
+      <h3>Distribute Final Decision</h3>
+      <button onclick="distribute()">Distribute Output</button>
+      <p id="output-status"></p>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+<section id="timeline">
+  <h3>Real-Time Decision Timeline</h3>
+  <div id="timeline-container">
+    <p>No decisions yet</p>
+  </div>
+</section>

@@ -1,10 +1,31 @@
-from flask import Flask
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import logging, os
 
-app = Flask(__name__)
+# Setup logging
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    filename="logs/server.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
-@app.route("/")
-def home():
-    return "Raasid API is running successfully!"
+# Create FastAPI app
+app = FastAPI(title="Raasid Handball Detection API")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# CORS settings
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For dev; restrict in prod
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount routers
+from api.routers import ai_endpoints, base, decision, output
+
+app.include_router(ai_endpoints.router)
+app.include_router(base.router)
+app.include_router(decision.router)
+app.include_router(output.router)

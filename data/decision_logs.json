@@ -1,0 +1,246 @@
+[
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1024,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 2001,
+        "final_decision": "Intentional Handball",
+        "certainty_score": 93.5,
+        "VAR_review": true
+    },
+    {
+        "frame": 2001,
+        "final_decision": "No Handball",
+        "certainty_score": 93.5,
+        "VAR_review": false
+    },
+    {
+        "frame": 2001,
+        "final_decision": "No Handball",
+        "certainty_score": 93.5,
+        "VAR_review": false
+    },
+    {
+        "frame": 2001,
+        "final_decision": "No Handball",
+        "certainty_score": 93.5,
+        "VAR_review": false
+    },
+    {
+        "frame": 2025,
+        "final_decision": "Handball Violation",
+        "certainty_score": 93.5,
+        "VAR_review": false
+    },
+    {
+        "frame": 3003,
+        "final_decision": "Handball Violation",
+        "certainty_score": 97.2,
+        "VAR_review": false
+    },
+    {
+        "frame": 4004,
+        "final_decision": "No Handball",
+        "certainty_score": 89.2,
+        "VAR_review": true
+    },
+    {
+        "frame": 1000,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.91,
+        "VAR_review": false
+    },
+    {
+        "frame": 1001,
+        "final_decision": "No Handball",
+        "certainty_score": 91.38,
+        "VAR_review": true
+    },
+    {
+        "frame": 1002,
+        "final_decision": "No Handball",
+        "certainty_score": 95.21,
+        "VAR_review": false
+    },
+    {
+        "frame": 1003,
+        "final_decision": "Handball Violation",
+        "certainty_score": 94.45,
+        "VAR_review": true
+    },
+    {
+        "frame": 1004,
+        "final_decision": "No Handball",
+        "certainty_score": 97.77,
+        "VAR_review": false
+    },
+    {
+        "frame": 4004,
+        "final_decision": "Handball Violation",
+        "certainty_score": 89.2,
+        "VAR_review": true
+    },
+    {
+        "frame": 4004,
+        "final_decision": "No Handball",
+        "certainty_score": 89.2,
+        "VAR_review": true
+    },
+    {
+        "frame": 101,
+        "final_decision": "No Handball",
+        "certainty_score": 95.1,
+        "VAR_review": true
+    },
+    {
+        "frame": 101,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.1,
+        "VAR_review": false
+    },
+    {
+        "frame": 101,
+        "final_decision": "Handball Violation",
+        "certainty_score": 95.1,
+        "VAR_review": false
+    },
+    {
+        "frame": 123,
+        "final_decision": "No Handball",
+        "certainty_score": 94.5,
+        "VAR_review": true
+    },
+    {
+        "frame": 124,
+        "final_decision": "Handball Violation",
+        "certainty_score": 92.5,
+        "VAR_review": true,
+        "reason": "Uncertain decision \u2014 confidence below 95%"
+    },
+    {
+        "frame": 999,
+        "final_decision": "Handball Violation",
+        "certainty_score": 89.5,
+        "VAR_review": true,
+        "reason": "Uncertain decision \u2014 confidence below 95%"
+    },
+    {
+        "frame": 1000,
+        "final_decision": "No Handball",
+        "certainty_score": 97.0,
+        "VAR_review": false,
+        "reason": "Hand position judged natural; no violation"
+    },
+    {
+        "frame": 123,
+        "final_decision": "No Handball",
+        "certainty_score": 94.5,
+        "VAR_review": true,
+        "reason": "Uncertain decision \u2014 confidence below 95%"
+    }
+]

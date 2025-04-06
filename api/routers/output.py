@@ -1,34 +1,50 @@
-from fastapi import APIRouter
-import json, os, logging
+from fastapi import APIRouter, HTTPException, status
+from api.utils.logger import logger
+from api.utils.storage import load_decision_logs
+from api.simulations.output_delivery import deliver_decision_to_all_endpoints
+from api.models.schemas import OutputDistributionResponse
 
 router = APIRouter()
 
-DECISION_LOGS_FILE = "data/decision_logs.json"
-
-# Load the latest decision
-def load_latest_decision():
-    if os.path.exists(DECISION_LOGS_FILE):
-        with open(DECISION_LOGS_FILE, "r") as f:
-            try:
-                data = json.load(f)
-                if isinstance(data, list) and data:
-                    return data[-1]
-            except json.JSONDecodeError:
-                logging.warning("Failed to parse decision log file.")
-    return None
-
-@router.post("/output_distribution")
+@router.post(
+    "/output_distribution",
+    response_model=OutputDistributionResponse,
+    status_code=status.HTTP_200_OK
+)
 def distribute_decision():
-    latest = load_latest_decision()
-    if not latest:
-        return {"status": "Error", "message": "No decisions available"}
+    """
+    Distributes the latest decision to all output endpoints
+    (e.g., smartwatch, TV broadcast, cloud storage),
+    and returns metadata including UUID and report path.
+    """
+    try:
+        decisions = load_decision_logs()
 
-    # Simulated distribution
-    logging.info(f"📤 Referee Smartwatch: {latest}")
-    logging.info(f"📺 TV Broadcast: {latest}")
-    logging.info(f"💾 Cloud Storage: {latest}")
+        if not decisions:
+            logger.warning("No decisions found to distribute.")
+            raise HTTPException(
+                status_code=404,
+                detail="No decisions available for distribution"
+            )
 
-    return {"status": "Success", "message": "Decision distributed to all endpoints"}
+        latest_decision = decisions[-1]
+        logger.info("Distributing latest decision to all systems")
 
+        delivery_metadata = deliver_decision_to_all_endpoints(latest_decision)
 
+        return OutputDistributionResponse(
+            status="Success",
+            message="Decision distributed to all endpoints",
+            decision=latest_decision,
+            distribution_id=delivery_metadata["distribution_id"],
+            timestamp=delivery_metadata["timestamp"],
+            report_path=delivery_metadata.get("report_path"),
+            delivered_to=delivery_metadata["delivered_to"]
+        )
 
+    except Exception as e:
+        logger.exception("Distribution failed due to internal error.")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to distribute decision"
+        )

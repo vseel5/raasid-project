@@ -242,5 +242,12 @@
         "certainty_score": 94.5,
         "VAR_review": true,
         "reason": "Uncertain decision \u2014 confidence below 95%"
+    },
+    {
+        "frame": 0,
+        "final_decision": "string",
+        "certainty_score": 100.0,
+        "VAR_review": true,
+        "reason": "string"
     }
 ]

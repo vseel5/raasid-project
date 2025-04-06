@@ -1,0 +1,7 @@
+{
+  "frame": 0,
+  "final_decision": "string",
+  "certainty_score": 100.0,
+  "VAR_review": true,
+  "reason": "string"
+}

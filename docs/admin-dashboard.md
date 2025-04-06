@@ -1,143 +1,61 @@
-# Admin Dashboard – Raasid VAR System
+# Admin Dashboard
 
-## 1. Overview
+## Overview
+The Admin Dashboard provides a centralized interface for managing and monitoring the handball detection system. It allows administrators to review decisions, override them if necessary, and manage logs for auditing and transparency purposes. The dashboard is designed to be intuitive and provides real-time updates on the system's performance and decision-making process.
 
-The Admin Dashboard is a simple web interface that allows referees, officials, and developers to interact with the Raasid backend services. It enables manual overrides, log inspection, system health monitoring, and output distribution – all from a centralized visual panel.
+## MVP Features
+The Admin Dashboard in the MVP includes the following functionalities:
 
----
+- Decision Logs: View logs of all decisions made by the system, including pose estimation, ball contact detection, and event context evaluation.
+- Manual Override: Ability to manually override decisions made by the AI, particularly in scenarios where human intervention is required.
+- Decision Distribution: Simulate sending decisions to external systems, such as the referee smartwatch, TV broadcast, and cloud storage.
 
-## 2. Purpose
+## User Interface
+The Admin Dashboard UI is designed with simplicity and efficiency in mind, ensuring ease of use for officials and administrators.
 
-- Provide a frontend interface for API interaction
-- Allow referees to override AI decisions (VAR)
-- View logged decision data for analysis
-- Distribute final decisions to output channels (TV, cloud, smartwatch)
+### Key UI Components:
+- Log Viewer: Displays a detailed list of all decisions made by the AI, including timestamps, decision outcomes, and context.
+- Decision Override Section: Allows administrators to modify AI decisions and provide justifications for manual overrides.
+- Simulation Controls: Provides options to trigger decision distribution to external systems and view the status of the distribution.
 
----
+## Data Flow
+The dashboard pulls data from the system’s backend, where AI decisions are logged and stored. The following data flow occurs within the dashboard:
 
-## 3. Features & UI Layout
+1. Decision Log Retrieval: The dashboard fetches decision logs from the backend to display in the Log Viewer.
+2. Manual Override: When an administrator chooses to override a decision, the new decision is updated in the system’s database.
+3. Decision Distribution: Administrators can trigger the distribution of decisions to external systems, simulating the communication process to referees, broadcasters, and storage systems.
 
-The dashboard is composed of four main sections:
+## Future Enhancements
+The MVP of the Admin Dashboard is functional with basic features, but several enhancements are planned for future versions:
 
-### 3.1 System Status
+- Real-time Event Monitoring: Provide live updates of ongoing matches, showing AI decision outcomes in real time.
+- Enhanced Override Interface: Add more granular control for administrators to fine-tune decision overrides, including confidence thresholds and contextual information.
+- Notification System: Integrate notifications to alert administrators of new decisions or overrides requiring attention.
 
-| **Function** | **Description** |
-|--------------|------------------|
-| `Check API`  | Sends a GET request to `/` to verify if the backend is running. |
-| **Feedback** | Displays "Raasid API is running" or error message. |
+## Technology Used
+- Frontend: Streamlit for rapid development of interactive UI components and real-time updates.
+- Backend: FastAPI for handling data requests and managing the communication between the dashboard and the AI system.
+- Containerization: Docker to ensure consistent environment setup for both frontend and backend components.
 
----
+## Getting Started
+1. Clone the repository and navigate to the dashboard directory:
+   ```bash
+   git clone https://github.com/vseel5/raasid-project
+   cd raasid-project
+   cd dashboard
+   ```
 
-### 3.2 Decision Logs
+2. Run the Admin Dashboard:
+   ```bash
+   streamlit run streamlit_app.py
+   ```
 
-| **Function**   | **Description** |
-|----------------|------------------|
-| `Load Logs`    | Fetches data from `/decision_logs` |
-| **Output**     | Displays all previous decision-making entries in formatted JSON. |
+3. Open the dashboard in your browser, and you will be able to interact with the features available in the MVP.
 
----
+## License
+This project is licensed under the MIT License – see the LICENSE file for details.
 
-### 3.3 VAR Override
-
-| **Inputs**          | **Purpose**                        |
-|----------------------|------------------------------------|
-| `Frame Number`        | Identifies the decision to override |
-| `New Decision Text`   | The updated decision by the referee |
-
-| **Action**         | Sends POST to `/var_review` with new override |
-|--------------------|-----------------------------------------------|
-| `Submit Override`  | Triggers update of the decision JSON & log     |
-
----
-
-### 3.4 Output Distribution
-
-| **Function**        | **Description**                                        |
-|---------------------|--------------------------------------------------------|
-| `Distribute Output` | Sends the latest decision to TV, smartwatch, and cloud |
-| **API Endpoint**    | POST request to `/output_distribution`                 |
-
----
-
-## 4. Technologies Used
-
-| **Component** | **Stack**                      |
-|---------------|--------------------------------|
-| Frontend      | HTML, CSS, JavaScript          |
-| Backend API   | FastAPI (`http://127.0.0.1:8000`) |
-| Preview Tool  | Live Server (VS Code Extension) |
-
----
-
-## 5. File Structure
-
-```plaintext
-frontend/
-├── index.html      # Main dashboard HTML
-├── style.css       # UI styling
-└── script.js       # API interaction logic
-```
-
----
-
-## 6. Sample Interactions
-
-### 6.1 API Health Check
-
-```bash
-GET http://127.0.0.1:8000/
-Response: { "message": "Raasid API is running" }
-```
-
----
-
-### 6.2 Load Logs
-
-```bash
-GET http://127.0.0.1:8000/decision_logs
-Response: [
-  {
-    "frame": 1024,
-    "final_decision": "Handball Violation",
-    "certainty_score": 95.0,
-    "VAR_review": false
-  }
-]
-```
-
----
-
-### 6.3 Submit Override
-
-```bash
-POST http://127.0.0.1:8000/var_review
-Payload:
-{
-  "frame": 1024,
-  "override_decision": "No Handball"
-}
-```
-
----
-
-### 6.4 Distribute Final Decision
-
-```bash
-POST http://127.0.0.1:8000/output_distribution
-```
-
----
-
-## 7. Future Enhancements
-
-- Real-time timeline visualization with event playback
-- Decision certainty graph or meter
-- Notification system for VAR officials
-- Role-based login for secure access
-
----
-
-## 8. Conclusion
-
-The Admin Dashboard serves as the control center for human review, decision distribution, and system health monitoring in the Raasid ecosystem. While simple by design, it plays a critical role in verifying and validating AI-powered officiating in real time.
+## Authors
+- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
+- [GitHub Profile](https://github.com/vseel5/raasid-project)
 

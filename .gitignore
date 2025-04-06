@@ -1,7 +1,22 @@
-raasid-env/
+# Python bytecode files
+*.pyc
 __pycache__/
-.DS_Store  # Mac users
+
+# Virtual environment
+.venv/
+raasid-env/
+
+# Logs and temporary files
 *.log
+*.swp
+*.bak
 
+# IDE files (if using Visual Studio Code or other IDEs)
+.vscode/
+.idea/
 
+# Miscellaneous
+*.env
+*.db
+*.tmp
 

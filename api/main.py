@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging, os
+from api.routers import simulated_outputs
 
 # Setup logging
 os.makedirs("logs", exist_ok=True)
@@ -29,3 +30,4 @@ app.include_router(ai_endpoints.router)
 app.include_router(base.router)
 app.include_router(decision.router)
 app.include_router(output.router)
+app.include_router(simulated_outputs.router)

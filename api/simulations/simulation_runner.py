@@ -1,14 +1,32 @@
 import time
 import random
 import requests
+import logging
+from typing import Dict
 
+# --- Configuration ---
 BASE_URL = "http://127.0.0.1:8000"
-
-# Define how many simulated frames you want to send
 NUM_FRAMES = 5
+DELAY_BETWEEN_REQUESTS = 0.5  # seconds
 
-def simulate_pose_estimation(frame):
-    data = {
+# --- Logger Setup ---
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+# --- Helper Functions ---
+def send_post(endpoint: str, payload: Dict, label: str):
+    try:
+        response = requests.post(f"{BASE_URL}{endpoint}", json=payload)
+        response.raise_for_status()
+        logging.info(f"{label} Sent (Frame {payload.get('frame')}): {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        logging.error(f"{label} Failed: {e}")
+
+# --- Simulation Functions ---
+def simulate_pose_estimation(frame: int):
+    payload = {
         "frame": frame,
         "hand_position": random.choice(["natural", "unnatural"]),
         "limb_angles": {
@@ -17,60 +35,57 @@ def simulate_pose_estimation(frame):
         },
         "certainty_score": round(random.uniform(85, 98), 2)
     }
-    r = requests.post(f"{BASE_URL}/pose_estimation", json=data)
-    print(f"Pose Estimation Sent (Frame {frame}):", r.status_code)
+    send_post("/pose_estimation", payload, "Pose Estimation")
 
-def simulate_ball_contact(frame):
-    data = {
+def simulate_ball_contact(frame: int):
+    payload = {
         "frame": frame,
         "ball_contact": random.choice([True, False]),
         "impact_force": round(random.uniform(1.5, 4.0), 2),
         "contact_duration": round(random.uniform(0.03, 0.09), 2),
         "sensor_source": "Smart Ball Sensor"
     }
-    r = requests.post(f"{BASE_URL}/ball_contact_ai", json=data)
-    print(f"Ball Contact Sent (Frame {frame}):", r.status_code)
+    send_post("/ball_contact_ai", payload, "Ball Contact")
 
-def simulate_event_context(frame):
+def simulate_event_context(frame: int):
     decision = random.choice(["intentional", "accidental"])
-    rule_violation = decision == "intentional"
-    data = {
+    payload = {
         "frame": frame,
         "handball_decision": decision,
         "certainty_score": round(random.uniform(85, 98), 2),
-        "rule_violation": rule_violation
+        "rule_violation": decision == "intentional"
     }
-    r = requests.post(f"{BASE_URL}/event_context_ai", json=data)
-    print(f"Event Context Sent (Frame {frame}):", r.status_code)
+    send_post("/event_context_ai", payload, "Event Context")
 
-def simulate_final_decision(frame):
+def simulate_final_decision(frame: int):
     decision = random.choice(["Handball Violation", "No Handball"])
     certainty = round(random.uniform(89, 99), 2)
-    var_review = certainty < 95
-
-    data = {
+    payload = {
         "frame": frame,
         "final_decision": decision,
         "certainty_score": certainty,
-        "VAR_review": var_review
+        "VAR_review": certainty < 95
     }
-    r = requests.post(f"{BASE_URL}/decision_making_ai", json=data)
-    print(f"Final Decision Sent (Frame {frame}):", r.status_code)
+    send_post("/decision_making_ai", payload, "Final Decision")
 
-# -------- Run Simulation --------
-for i in range(NUM_FRAMES):
-    frame_id = 1000 + i
+# --- Main Simulation Loop ---
+def main():
+    logging.info("Starting AI Simulation for Raasid System")
+    for i in range(NUM_FRAMES):
+        frame_id = 1000 + i
+        simulate_pose_estimation(frame_id)
+        time.sleep(DELAY_BETWEEN_REQUESTS)
 
-    simulate_pose_estimation(frame_id)
-    time.sleep(0.5)
+        simulate_ball_contact(frame_id)
+        time.sleep(DELAY_BETWEEN_REQUESTS)
 
-    simulate_ball_contact(frame_id)
-    time.sleep(0.5)
+        simulate_event_context(frame_id)
+        time.sleep(DELAY_BETWEEN_REQUESTS)
 
-    simulate_event_context(frame_id)
-    time.sleep(0.5)
+        simulate_final_decision(frame_id)
+        time.sleep(1)  # Slightly longer after full frame
 
-    simulate_final_decision(frame_id)
-    time.sleep(1)
+    logging.info("Simulation complete.")
 
-print("Simulation complete.")
+if __name__ == "__main__":
+    main()

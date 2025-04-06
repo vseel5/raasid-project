@@ -1,198 +1,215 @@
-# Raasid API Reference
+# API Reference
 
-This document serves as the full API reference for the Raasid AI-Powered Handball Detection System. It outlines available endpoints, request/response formats, and error-handling behavior for developers and integrators.
+## Overview
+The API Reference provides a detailed overview of the available endpoints in the Raasid system, allowing developers to interact with the AI models and access system functionalities. This API is designed to handle requests related to pose estimation, ball contact detection, event context classification, and decision-making for football officiating. It also supports external system integrations for real-time decision distribution.
 
----
-
-## Root Endpoint
-
-### `GET /`
-Returns a simple health check to confirm that the API is live.
-
-#### Response:
-```json
-{ "message": "Raasid API is running" }
+## Base URL
+The base URL for the API is:
+```
+http://127.0.0.1:8000
 ```
 
----
+## Endpoints
 
-## AI Input Endpoints
-
-### `POST /pose_estimation`
-
-Accepts limb position data from Pose Estimation AI.
-
-#### Request Body:
+### 1. Pose Estimation
+**Endpoint**: `/pose_estimation`  
+**Method**: `POST`  
+**Description**: Accepts pose estimation data, including hand positioning and limb angles, to assess the likelihood of a handball incident.  
+**Request Body**:
 ```json
 {
-  "frame": 1024,
+  "frame": 1,
   "hand_position": "unnatural",
   "limb_angles": {
-    "elbow": 120,
-    "shoulder": 45
+    "elbow": 120.5,
+    "shoulder": 45.2
   },
-  "certainty_score": 94.5
+  "certainty_score": 92.4
 }
 ```
-
-#### Response:
-```json
-{ "status": "Success", "message": "Pose estimation processed" }
-```
-
----
-
-### `POST /ball_contact_ai`
-
-Receives ball-hand impact data from smart ball and audio sensors.
-
-#### Request Body:
+**Response**:
 ```json
 {
-  "frame": 1024,
+  "handball_detected": true,
+  "intentional": true,
+  "confidence_score": 85.3,
+  "contact_duration": 0.043,
+  "impact_force": 3.45,
+  "pose_unusual": true
+}
+```
+**Status Codes**:
+- `200 OK`: Successful pose estimation.
+- `400 Bad Request`: Invalid input data.
+
+### 2. Ball Contact Detection
+**Endpoint**: `/ball_contact_ai`  
+**Method**: `POST`  
+**Description**: Accepts sensor data to detect whether the ball made contact with the player and returns the impact force and contact duration.  
+**Request Body**:
+```json
+{
+  "frame": 1,
   "ball_contact": true,
-  "impact_force": 3.2,
-  "contact_duration": 0.07,
+  "impact_force": 3.4,
+  "contact_duration": 0.05,
   "sensor_source": "Smart Ball Sensor"
 }
 ```
-
-#### Response:
-```json
-{ "status": "Success", "message": "Ball contact processed" }
-```
-
----
-
-### `POST /event_context_ai`
-
-Consumes combined analysis from Pose and Ball Contact AI to classify handball intent.
-
-#### Request Body:
+**Response**:
 ```json
 {
-  "frame": 1024,
+  "ball_contact": true,
+  "impact_force": 3.4,
+  "contact_duration": 0.05
+}
+```
+**Status Codes**:
+- `200 OK`: Successful detection of ball contact.
+- `400 Bad Request`: Invalid input data.
+
+### 3. Event Context Classification
+**Endpoint**: `/event_context_ai`  
+**Method**: `POST`  
+**Description**: Accepts event context data to classify the handball as intentional or accidental and checks if the incident violates FIFA rules.  
+**Request Body**:
+```json
+{
+  "frame": 1,
   "handball_decision": "intentional",
-  "certainty_score": 92.5,
+  "certainty_score": 85.2,
   "rule_violation": true
 }
 ```
-
-#### Response:
-```json
-{ "status": "Success", "message": "Event context processed" }
-```
-
----
-
-## Decision-Making Layer
-
-### `POST /decision_making_ai`
-
-Receives the final AI decision. Stores it persistently and logs it.
-
-#### Request Body:
+**Response**:
 ```json
 {
-  "frame": 1024,
-  "final_decision": "Handball Violation",
-  "certainty_score": 93.5,
-  "VAR_review": false
+  "handball_decision": "intentional",
+  "certainty_score": 85.2,
+  "rule_violation": true
 }
 ```
+**Status Codes**:
+- `200 OK`: Successful classification of event context.
+- `400 Bad Request`: Invalid input data.
 
-#### Response:
-```json
-{ "status": "Success", "message": "Decision making processed" }
-```
-
----
-
-## VAR Review Endpoint
-
-### `POST /var_review`
-
-Allows manual override of an AI decision via referee input.
-
-#### Request Body:
+### 4. Decision Making
+**Endpoint**: `/decision_making_ai`  
+**Method**: `POST`  
+**Description**: Accepts inputs from pose estimation, ball contact detection, and event context classification, and returns the final decision (handball or no handball).  
+**Request Body**:
 ```json
 {
-  "frame": 1024,
-  "override_decision": "No Handball"
+  "pose_estimation": {
+    "hand_position": "unnatural",
+    "limb_angles": {"elbow": 110.2, "shoulder": 45.3},
+    "certainty_score": 90.1
+  },
+  "ball_contact": {
+    "ball_contact": true,
+    "impact_force": 4.0,
+    "contact_duration": 0.06
+  },
+  "event_context": {
+    "handball_decision": "accidental",
+    "certainty_score": 88.7,
+    "rule_violation": false
+  }
 }
 ```
-
-#### Response:
+**Response**:
 ```json
-{ "status": "Success", "message": "VAR decision updated" }
+{
+  "final_decision": "No Handball",
+  "certainty_score": 90.1
+}
 ```
+**Status Codes**:
+- `200 OK`: Successful decision making.
+- `400 Bad Request`: Invalid input data.
 
-#### If frame not found:
+### 5. VAR Review
+**Endpoint**: `/var_review`  
+**Method**: `POST`  
+**Description**: Allows a manual VAR override of AI decisions.  
+**Request Body**:
 ```json
-{ "status": "Error", "message": "Frame not found for review" }
+{
+  "frame": 1,
+  "override_decision": "Handball - Penalty"
+}
 ```
-
----
-
-## Output Distribution
-
-### `POST /output_distribution`
-
-Distributes the latest AI decision to referee smartwatch, VAR, TV broadcast, and cloud (simulated).
-
-#### Response:
+**Response**:
 ```json
-{ "status": "Success", "message": "Decision distributed successfully" }
+{
+  "status": "Success",
+  "message": "Decision overridden successfully"
+}
 ```
+**Status Codes**:
+- `200 OK`: Successful override.
+- `400 Bad Request`: Invalid input data.
 
-#### If no decision exists:
+### 6. Output Distribution
+**Endpoint**: `/output_distribution`  
+**Method**: `POST`  
+**Description**: Simulates sending the final decision to external systems such as the referee smartwatch, TV broadcast, and cloud storage.  
+**Response**:
 ```json
-{ "status": "Error", "message": "No decisions available" }
+{
+  "status": "Success",
+  "message": "Decision distributed to all endpoints",
+  "distribution_id": "a1b2c3d4-5678-9012-efgh-3456789abcd",
+  "timestamp": "2025-04-06T15:22:01.456Z",
+  "delivered_to": ["Referee Smartwatch", "TV Broadcast", "Cloud Storage"]
+}
 ```
+**Status Codes**:
+- `200 OK`: Successful distribution.
+- `500 Internal Server Error`: Failure to distribute decision.
 
----
-
-## Decision Log Retrieval
-
-### `GET /decision_logs`
-
-Returns the full list of stored decisions from persistent memory.
-
-#### Response:
+### 7. Decision Logs
+**Endpoint**: `/decision_logs`  
+**Method**: `GET`  
+**Description**: Retrieves logs of all decisions made by the system, providing transparency and auditability.  
+**Response**:
 ```json
 [
   {
-    "frame": 1024,
-    "final_decision": "Handball Violation",
-    "certainty_score": 93.5,
-    "VAR_review": true
+    "decision_id": "6d0a16a7-7572-43b0-965b-32c892d1e1b5",
+    "frame": 1,
+    "final_decision": "No Handball",
+    "certainty_score": 90.1,
+    "timestamp": "2025-04-06T15:22:01.456Z"
   },
-  ...
+  {
+    "decision_id": "a1b2c3d4-5678-9012-efgh-3456789abcd",
+    "frame": 2,
+    "final_decision": "Handball - Penalty",
+    "certainty_score": 85.3,
+    "timestamp": "2025-04-06T15:23:01.789Z"
+  }
 ]
 ```
+**Status Codes**:
+- `200 OK`: Successfully retrieved decision logs.
+- `500 Internal Server Error`: Failure to retrieve decision logs.
 
----
+## Authentication
+Currently, the API does not require authentication for local testing. However, for production environments, it is recommended to implement OAuth or JWT authentication to secure the endpoints.
 
 ## Error Handling
+The API returns standard HTTP status codes to indicate the success or failure of a request:
 
-- All endpoints return meaningful `status` and `message` fields.
-- Status codes follow HTTP conventions (`200`, `400`, etc.).
-- Backend logs every call in `logs/server.log`.
+- `200 OK`: The request was successful, and the response contains the requested data.
+- `400 Bad Request`: The request was malformed or missing required data.
+- `500 Internal Server Error`: An error occurred on the server, and the request could not be processed.
 
----
+For each endpoint, additional error messages may be provided in the response body to help with debugging.
 
-## Testing Tips
+## License
+This project is licensed under the MIT License – see the LICENSE file for details.
 
-You can test these endpoints using:
-- Python `requests` module
-- Postman or Insomnia REST clients
-- The built-in Admin Dashboard in `frontend/index.html`
-
----
-
-## Notes
-
-- All endpoints accept `application/json` payloads.
-- CORS is enabled for local testing via browser dashboard.
-- Logging is enabled in `logs/server.log`.
-
+## Authors
+- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
+- [GitHub Profile](https://github.com/vseel5/raasid-project)

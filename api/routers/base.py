@@ -1,12 +1,14 @@
-from fastapi import APIRouter
-import logging
+from fastapi import APIRouter, status
+from api.utils.logger import logger
 
 router = APIRouter()
 
-@router.get("/")
-def root():
-    logging.info("Health check: API is running")
-    return {"message": "Raasid API is running"}
-
+@router.get("/", status_code=status.HTTP_200_OK)
+def health_check():
+    """
+    Health check endpoint for Raasid API.
+    """
+    logger.info("Health check: API is running")
+    return {"status": "OK", "message": "Raasid API is running"}
 
 

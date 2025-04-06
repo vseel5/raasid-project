@@ -1,14 +1,21 @@
 import logging
 import os
+from logging.handlers import RotatingFileHandler
 
-LOG_FILE = "logs/server.log"
-os.makedirs("logs", exist_ok=True)
+# --- Logging Directory Setup ---
+LOG_DIR = "logs"
+LOG_FILE = os.path.join(LOG_DIR, "server.log")
+os.makedirs(LOG_DIR, exist_ok=True)
 
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
+# --- Logger Configuration ---
 logger = logging.getLogger("raasid")
+logger.setLevel(logging.INFO)
+
+# Prevent duplicate handlers when re-importing
+if not logger.hasHandlers():
+    file_handler = RotatingFileHandler(LOG_FILE, maxBytes=5_000_000, backupCount=3)
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
 

@@ -1,125 +1,108 @@
-# AI Model Training Pipeline – Raasid System
+# AI Training Pipeline
 
-## 1. Introduction
+## Overview
+The AI training pipeline for the Raasid system is designed to ensure that the AI models are trained effectively to detect handball incidents with high accuracy. The pipeline covers data collection, preprocessing, model training, evaluation, and deployment. The goal of the pipeline is to maintain high performance, scalability, and accuracy in real-world football scenarios.
 
-This document outlines the training methodology for Raasid’s AI models that power real-time handball detection. Each model in the AI Processing Layer is trained on structured, labeled datasets using industry-standard machine learning techniques. This training pipeline ensures that Raasid can make accurate, high-confidence decisions during football matches.
+## Pipeline Stages
+The AI training pipeline consists of several stages, each aimed at improving the model's accuracy and reliability. Below is a detailed description of each stage:
 
----
+### 1. Data Collection
+The first step in the training pipeline is data collection. The system relies on two main types of data sources:
 
-## 2. Model Overview
+- Synthetic Data: Generated through simulations to model various handball scenarios, including different player poses, ball trajectories, and rule violations.
+- Real Match Data: Collected from actual football matches, providing ground truth data for training and testing the models. This data includes video footage and sensor data (e.g., impact force, ball contact duration).
 
-| **AI Model**        | **Role**                                        |
-|---------------------|--------------------------------------------------|
-| Pose Estimation AI  | Detects player limb and hand positioning         |
-| Ball Contact AI     | Detects ball-hand contact using sensors          |
-| Event Context AI    | Determines intent and rule violation context     |
+The data is labeled to indicate whether a handball occurred, the context of the handball, and the intent behind the action (intentional or accidental).
 
----
+### 2. Data Preprocessing
+Data preprocessing is crucial for preparing the collected data for training. This step includes:
 
-## 3. Dataset Preparation
+- Normalization: Scaling input data to a consistent range to ensure uniformity across different data types.
+- Data Augmentation: Generating variations of the original data (e.g., rotating images, varying lighting conditions) to improve model generalization.
+- Feature Engineering: Extracting relevant features from raw sensor data and video frames, such as limb angles, impact force, and handball context.
 
-### 3.1 Data Sources
+Preprocessing helps reduce noise and prepares the data for optimal model training.
 
-| **Model**             | **Data Source**                                        |
-|------------------------|--------------------------------------------------------|
-| Pose Estimation AI     | VAR Camera Footage, SAOT Sensor Data                  |
-| Ball Contact AI        | Smart Ball Sensor Data, Snickometer Audio             |
-| Event Context AI       | Combined outputs of Pose and Ball Contact AI          |
+### 3. Model Training
+The training stage focuses on optimizing the models to detect handball incidents accurately. The key models trained in this pipeline are:
 
-### 3.2 Preprocessing Steps
+- Pose Estimation Model: Trained to detect hand positions and limb angles to assess the likelihood of a handball.
+- Ball Contact Detection Model: Trained to analyze sensor data and determine the severity of ball contact.
+- Event Context Classification Model: Trained to classify the handball incident as intentional or accidental, and assess rule violations.
 
-- **Synchronization**: Align timestamps from multi-sensor inputs.
-- **Noise Filtering**: Remove irrelevant or inconsistent signal data.
-- **Feature Extraction**: Extract angles, impact force, posture, and sound frequency peaks.
-- **Labeling**:
-  - Handball vs. Non-handball
-  - Intentional vs. Accidental
-  - Confirmed vs. False Contact
+Each model is trained using supervised learning techniques, with labeled data to guide the training process. The models are optimized using performance metrics like accuracy, precision, recall, and F1 score.
 
----
+### 4. Model Evaluation
+Model evaluation ensures that the trained models perform well in real-world scenarios. The evaluation stage includes:
 
-## 4. Model Training Pipelines
+- Cross-validation: A technique used to assess the model's generalization ability by testing it on different subsets of data.
+- Performance Metrics: Metrics such as accuracy, precision, recall, F1 score, and confusion matrix are used to evaluate the models' performance.
+- A/B Testing: Comparing different versions of models to select the best-performing one for deployment.
 
-### 4.1 Pose Estimation AI
+The goal is to ensure the models can make accurate handball decisions under varying conditions.
 
-- **Model Type**: Convolutional Neural Network (CNN)
-- **Library**: [MediaPipe](https://google.github.io/mediapipe/) or OpenPose
-- **Inputs**: Skeleton keypoints (elbow, shoulder, hand)
-- **Outputs**: Hand position, limb angles, certainty score
+### 5. Model Tuning and Optimization
+After the initial evaluation, the models may require further tuning and optimization to enhance performance:
 
-**Training Flow:**
-1. Extract pose keypoints from video frames.
-2. Train CNN to classify hand position (natural vs. unnatural).
-3. Optimize with reinforcement learning for dynamic motion recognition.
+- Hyperparameter Tuning: Adjusting model parameters, such as learning rate, batch size, and the number of layers, to improve accuracy.
+- Model Regularization: Techniques like dropout and L2 regularization are applied to prevent overfitting and improve generalization.
+- Ensemble Methods: Combining the predictions of multiple models to enhance decision-making accuracy.
 
----
+Optimization ensures that the models perform well under real-time match conditions.
 
-### 4.2 Ball Contact AI
+### 6. Model Deployment
+Once the models are trained and optimized, they are deployed as part of the Raasid system:
 
-- **Model Type**: Random Forest Classifier
-- **Library**: scikit-learn
-- **Inputs**: Force, duration, Snickometer sound peaks
-- **Outputs**: Ball-hand contact status (True/False)
+- Model Integration: The trained models are integrated into the FastAPI backend, where they are called in real time to make decisions during matches.
+- Containerization: The models are packaged into Docker containers to ensure consistency and portability across different environments.
+- Scalability: The system is designed to scale, allowing multiple matches to be processed simultaneously.
 
-**Training Flow:**
-1. Merge sensor readings with audio timestamps.
-2. Extract relevant features (impact magnitude, duration).
-3. Train model to differentiate hand contact from noise or body deflections.
+Deployment ensures that the models can make real-time handball decisions during matches.
 
----
+## Future Enhancements
+The training pipeline will be enhanced in future iterations of the system:
 
-### 4.3 Event Context AI
+- Continuous Learning: Implementing an online learning system to update the models with new data in real time, improving accuracy over time.
+- Automated Data Labeling: Using semi-supervised learning and active learning techniques to automate the labeling of data, reducing the need for manual labeling.
+- Model Versioning: Implementing a version control system for models to track changes and ensure reproducibility of results.
 
-- **Model Type**: Recurrent Neural Network (LSTM)
-- **Library**: TensorFlow / Keras
-- **Inputs**: Pose + Ball Contact outputs
-- **Outputs**: Final classification (intentional/accidental), rule violation flag
+## Technology Used
+- Training Frameworks: TensorFlow, Keras, and Scikit-learn for model training and optimization.
+- Data Processing: Pandas, NumPy, and OpenCV for data manipulation and preprocessing.
+- Model Deployment: FastAPI for real-time deployment, Docker for containerization.
+- Version Control: Git for code versioning, Docker for model versioning.
 
-**Training Flow:**
-1. Sequence event data pre- and post-contact.
-2. Train LSTM to detect intent patterns based on movement and contact.
-3. Use rule-based overlay (decision tree) to apply FIFA regulations.
+## Getting Started
+To set up the training pipeline locally, follow these steps:
 
----
+1. Clone the repository and set up the environment:
+   ```bash
+   git clone https://github.com/vseel5/raasid-project
+   cd raasid-project
+   python -m venv raasid-env
+   raasid-env\Scripts\activate  # On macOS/Linux: source raasid-env/bin/activate
+   pip install -r requirements.txt
+   ```
 
-## 5. Evaluation Metrics
+2. Train the models by running the following script:
+   ```bash
+   python train_models.py
+   ```
 
-| **Metric**         | **Purpose**                                       |
-|--------------------|---------------------------------------------------|
-| Accuracy           | Overall correct predictions                       |
-| Precision          | Correctly identified handball vs. false positives |
-| Recall             | Ability to detect all true handball events        |
-| F1 Score           | Harmonic mean of precision and recall             |
-| Inference Time     | Real-time decision capability                     |
+3. Evaluate the models:
+   ```bash
+   python evaluate_models.py
+   ```
 
----
+4. Once the models are trained and evaluated, run the FastAPI backend to deploy the models:
+   ```bash
+   uvicorn api.main:app --reload
+   ```
 
-## 6. Deployment Strategy
+## License
+This project is licensed under the MIT License – see the LICENSE file for details.
 
-### 6.1 Testing Environments
-- **Offline Testing**: Run inference on pre-recorded match data.
-- **Simulated Matches**: Integrate AI outputs with mock refereeing interface.
-- **Edge Testing**: Run lightweight models on edge devices (e.g., stadium servers).
-
-### 6.2 Production Integration
-- Expose each model’s output through FastAPI endpoints
-- Log all predictions for retraining and auditing
-- Flag low-confidence results for VAR override
-
----
-
-## 7. Model Update & Improvement Loop
-
-1. Log real-world match incidents
-2. Annotate misclassified decisions
-3. Retrain models with updated samples
-4. Push versioned models with rollback capability
-
----
-
-## 8. Summary
-
-The AI training pipeline in Raasid is designed to ensure accuracy, consistency, and explainability in handball detection. By combining deep learning models with rule-based systems and real-time evaluation metrics, Raasid achieves high-performance decision-making that supports referees and enhances match integrity.
-
----
+## Authors
+- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
+- [GitHub Profile](https://github.com/vseel5/raasid-project)
 

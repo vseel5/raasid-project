@@ -1,23 +1,29 @@
-import json
-import requests
 import logging
+import requests
+import json
 
-logging.basicConfig(level=logging.INFO)
+# --- Logging Configuration ---
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
-# Simulated Event Context AI Output
-event_context_result = {
+# --- Simulated Event Context Output ---
+event_context_payload = {
     "frame": 2025,
     "handball_decision": "intentional",
     "certainty_score": 93.5,
     "rule_violation": True
 }
 
-# API Endpoint for Event Context
-EVENT_CONTEXT_API_ENDPOINT = "http://127.0.0.1:8000/event_context_ai"
+# --- API Endpoint ---
+EVENT_CONTEXT_API_URL = "http://127.0.0.1:8000/event_context_ai"
 
-# Send Data to API
-response = requests.post(EVENT_CONTEXT_API_ENDPOINT, json=event_context_result)
-
-#Response from API
-logging.info(f"Event Context AI Sent Data: {response.status_code}, {response.json()}")
-
+# --- Send Request ---
+try:
+    logging.info("Sending event context data to API...")
+    response = requests.post(EVENT_CONTEXT_API_URL, json=event_context_payload)
+    response.raise_for_status()
+    logging.info("API Response: %s", json.dumps(response.json(), indent=2))
+except requests.exceptions.RequestException as e:
+    logging.error("Failed to communicate with Event Context API: %s", str(e))

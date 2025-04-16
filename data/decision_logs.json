@@ -1,253 +1,3491 @@
 [
     {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 98.0
+    },
+    {
+        "frame": 101,
+        "hand_position": "unnatural",
         "certainty_score": 95.0,
         "VAR_review": false
     },
     {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 1024,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.0,
-        "VAR_review": false
-    },
-    {
-        "frame": 2001,
-        "final_decision": "Intentional Handball",
-        "certainty_score": 93.5,
+        "frame": 101,
+        "hand_position": "unnatural",
+        "certainty_score": 89.28,
         "VAR_review": true
     },
     {
-        "frame": 2001,
-        "final_decision": "No Handball",
-        "certainty_score": 93.5,
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 97.28,
         "VAR_review": false
     },
     {
-        "frame": 2001,
-        "final_decision": "No Handball",
-        "certainty_score": 93.5,
+        "frame": 150,
+        "hand_position": "unnatural",
+        "certainty_score": 92.49,
+        "VAR_review": true
+    },
+    {
+        "frame": 200,
+        "hand_position": "unnatural",
+        "certainty_score": 89.07,
+        "VAR_review": true
+    },
+    {
+        "frame": 2025,
+        "ball_contact": true,
+        "impact_force": 4.0,
+        "certainty_score": 94.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 90.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 90.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744770187,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 2001,
-        "final_decision": "No Handball",
-        "certainty_score": 93.5,
+        "frame": 1744770189,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770189,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770190,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770190,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770190,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770191,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770191,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770192,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770192,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770193,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770193,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770195,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770195,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770196,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770196,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770197,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770197,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770198,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770198,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770198,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770199,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770199,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770200,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770200,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770201,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770201,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770202,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770202,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770202,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770203,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770203,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770204,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770204,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770205,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770205,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770206,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770206,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770207,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770207,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770207,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770208,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770208,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770209,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770209,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770210,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770210,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770211,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770211,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770211,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770212,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770213,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770213,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770214,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770214,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770215,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770215,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770216,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770216,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770217,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770217,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770218,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770218,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770219,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770220,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770452,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770453,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770455,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770455,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770456,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770456,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770457,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770457,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770458,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770458,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770459,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770459,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770459,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770460,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770460,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770461,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770461,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770462,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770462,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770463,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770463,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770464,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770464,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770465,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770465,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770465,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770466,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770466,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770467,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770467,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770468,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770468,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770469,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770469,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770470,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770470,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770471,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770471,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770471,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770472,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770472,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770473,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770473,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770474,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770474,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770475,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770475,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770476,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770476,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770476,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770477,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770478,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770478,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770479,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770479,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770480,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770480,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770481,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770481,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770482,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770482,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770483,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770483,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770484,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770484,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770817,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770819,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770819,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770820,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770820,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770820,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770821,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770821,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770822,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770822,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770823,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770823,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770824,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770824,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770825,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770825,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770826,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770827,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770828,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770828,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770829,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770829,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770830,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770830,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770830,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770831,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770831,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770832,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770832,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770833,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770833,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770834,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770834,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770835,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770835,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770836,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770836,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770837,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770837,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770838,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770838,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770838,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770839,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770839,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770840,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770840,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770841,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770841,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770842,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770842,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770843,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770844,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770845,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770845,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770846,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770846,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770847,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770847,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770848,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770848,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770849,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770849,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770849,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770850,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744770850,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
         "frame": 2025,
-        "final_decision": "Handball Violation",
-        "certainty_score": 93.5,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 3003,
-        "final_decision": "Handball Violation",
-        "certainty_score": 97.2,
+        "frame": 1744772066,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 4004,
-        "final_decision": "No Handball",
-        "certainty_score": 89.2,
-        "VAR_review": true
-    },
-    {
-        "frame": 1000,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.91,
+        "frame": 1744772067,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 1001,
-        "final_decision": "No Handball",
-        "certainty_score": 91.38,
-        "VAR_review": true
-    },
-    {
-        "frame": 1002,
-        "final_decision": "No Handball",
-        "certainty_score": 95.21,
+        "frame": 1744772069,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 1003,
-        "final_decision": "Handball Violation",
-        "certainty_score": 94.45,
-        "VAR_review": true
-    },
-    {
-        "frame": 1004,
-        "final_decision": "No Handball",
-        "certainty_score": 97.77,
+        "frame": 1744772069,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 4004,
-        "final_decision": "Handball Violation",
-        "certainty_score": 89.2,
-        "VAR_review": true
-    },
-    {
-        "frame": 4004,
-        "final_decision": "No Handball",
-        "certainty_score": 89.2,
-        "VAR_review": true
-    },
-    {
-        "frame": 101,
-        "final_decision": "No Handball",
-        "certainty_score": 95.1,
-        "VAR_review": true
-    },
-    {
-        "frame": 101,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.1,
+        "frame": 1744772070,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 101,
-        "final_decision": "Handball Violation",
-        "certainty_score": 95.1,
+        "frame": 1744772070,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
         "VAR_review": false
     },
     {
-        "frame": 123,
-        "final_decision": "No Handball",
-        "certainty_score": 94.5,
+        "frame": 1744772071,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772071,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772072,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772072,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772073,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772073,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772074,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772074,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772075,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772075,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772076,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772076,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772077,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772077,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772078,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772078,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772079,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772079,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772080,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772080,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772081,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772081,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772082,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772082,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772083,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772083,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772084,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772084,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772085,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772085,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772086,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772086,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772087,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772087,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772088,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772088,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772089,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772089,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772090,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772090,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772091,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772091,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772092,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772092,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772093,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772094,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772094,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772095,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772095,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772096,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772096,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772097,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772097,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772098,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772098,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772099,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772099,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772100,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772100,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 2025,
+        "ball_contact": true,
+        "impact_force": 4.0,
+        "certainty_score": 94.0,
         "VAR_review": true
     },
     {
-        "frame": 124,
-        "final_decision": "Handball Violation",
-        "certainty_score": 92.5,
-        "VAR_review": true,
-        "reason": "Uncertain decision \u2014 confidence below 95%"
+        "frame": 2025,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
     },
     {
-        "frame": 999,
-        "final_decision": "Handball Violation",
-        "certainty_score": 89.5,
-        "VAR_review": true,
-        "reason": "Uncertain decision \u2014 confidence below 95%"
+        "frame": 1744772066,
+        "hand_position": "unnatural",
+        "certainty_score": 94.17037008083715,
+        "VAR_review": true
     },
     {
-        "frame": 1000,
-        "final_decision": "No Handball",
-        "certainty_score": 97.0,
-        "VAR_review": false,
-        "reason": "Hand position judged natural; no violation"
+        "frame": 1744772102,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
     },
     {
-        "frame": 123,
-        "final_decision": "No Handball",
-        "certainty_score": 94.5,
-        "VAR_review": true,
-        "reason": "Uncertain decision \u2014 confidence below 95%"
+        "frame": 1744772103,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
     },
     {
-        "frame": 0,
-        "final_decision": "string",
-        "certainty_score": 100.0,
-        "VAR_review": true,
-        "reason": "string"
+        "frame": 1744772103,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772104,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772104,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772105,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772105,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772106,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772106,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772107,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772107,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772108,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772108,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772109,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772109,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772110,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772110,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772111,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772111,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772112,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772112,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772113,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772113,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772114,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772114,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772115,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772115,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772116,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772116,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772117,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772117,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772118,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772118,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772119,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772120,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772120,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772121,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772121,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772122,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772122,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772124,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772124,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772125,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772125,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772126,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772244,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772245,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772246,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772247,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772247,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772248,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772249,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772250,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772251,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772251,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772251,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772252,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772252,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772253,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772253,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772254,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772254,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772255,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772255,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772256,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772256,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772257,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772257,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772258,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772258,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772259,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772259,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772260,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772260,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772261,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772261,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772262,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772262,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772263,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772263,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772264,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772264,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772265,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772265,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772266,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772266,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772267,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772267,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772268,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772268,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772269,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772269,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772270,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772270,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772270,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772271,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772273,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772273,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772274,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772275,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772276,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772277,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772277,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772278,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772279,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772279,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772280,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772280,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772281,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772282,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 2025,
+        "ball_contact": true,
+        "impact_force": 4.0,
+        "certainty_score": 94.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 2025,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772244,
+        "hand_position": "unnatural",
+        "certainty_score": 89.99983016212839,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744772284,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772285,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772285,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772286,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772287,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772287,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772288,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772288,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772289,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772289,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772290,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772291,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772291,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772292,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772292,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772293,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772294,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772294,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772295,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772296,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772296,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772297,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772297,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772298,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772298,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772299,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772299,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772300,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772300,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772301,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772301,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772302,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772415,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772417,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772417,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772418,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772418,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772419,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772419,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772420,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772420,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772421,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772421,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772422,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772422,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772423,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772423,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772424,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772424,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772424,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772425,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772425,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772426,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772426,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772427,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772427,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772428,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772428,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772429,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772429,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772430,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772430,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772431,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772431,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772432,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772432,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772433,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772433,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772434,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772434,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772435,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772435,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772436,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772436,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772437,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772437,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772438,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772438,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772439,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772439,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772440,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772440,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772441,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772442,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772444,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772444,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772445,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772446,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772447,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772448,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772448,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772449,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772450,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772451,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772451,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772452,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772453,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 2025,
+        "ball_contact": true,
+        "impact_force": 4.0,
+        "certainty_score": 94.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 2025,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772415,
+        "hand_position": "unnatural",
+        "certainty_score": 89.8211193107375,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744772455,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772456,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772457,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772457,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772458,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772458,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772459,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772460,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772460,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772461,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772462,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772462,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772463,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772464,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744772464,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840200,
+        "hand_position": "unnatural",
+        "certainty_score": 93.0242562645646,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840204,
+        "hand_position": "unnatural",
+        "certainty_score": 90.47892215847996,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840207,
+        "hand_position": "unnatural",
+        "certainty_score": 97.19968012045764,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840209,
+        "hand_position": "unnatural",
+        "certainty_score": 89.51791025681894,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840212,
+        "hand_position": "unnatural",
+        "certainty_score": 92.3190348994047,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840214,
+        "hand_position": "unnatural",
+        "certainty_score": 98.52675920442289,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840217,
+        "hand_position": "unnatural",
+        "certainty_score": 87.3571186199586,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840219,
+        "hand_position": "unnatural",
+        "certainty_score": 98.80580919825321,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840222,
+        "hand_position": "unnatural",
+        "certainty_score": 87.38594506414883,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840224,
+        "hand_position": "unnatural",
+        "certainty_score": 93.41276614114956,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840227,
+        "hand_position": "unnatural",
+        "certainty_score": 88.00628098571292,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840229,
+        "hand_position": "unnatural",
+        "certainty_score": 86.25966084309725,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840232,
+        "hand_position": "unnatural",
+        "certainty_score": 90.61413210655479,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840235,
+        "hand_position": "unnatural",
+        "certainty_score": 91.42392986572447,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840237,
+        "hand_position": "unnatural",
+        "certainty_score": 85.53561586139861,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840240,
+        "hand_position": "unnatural",
+        "certainty_score": 86.76337797022177,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840242,
+        "hand_position": "unnatural",
+        "certainty_score": 95.83065071743425,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840245,
+        "hand_position": "unnatural",
+        "certainty_score": 94.73258316347292,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840247,
+        "hand_position": "unnatural",
+        "certainty_score": 98.65756858016871,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840250,
+        "hand_position": "unnatural",
+        "certainty_score": 98.03563174170338,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840252,
+        "hand_position": "unnatural",
+        "certainty_score": 88.58758327692004,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840255,
+        "hand_position": "unnatural",
+        "certainty_score": 88.08224942479175,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840258,
+        "hand_position": "unnatural",
+        "certainty_score": 89.32471150595998,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840260,
+        "hand_position": "unnatural",
+        "certainty_score": 93.06219089913012,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840263,
+        "hand_position": "unnatural",
+        "certainty_score": 94.7555370784363,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840410,
+        "hand_position": "unnatural",
+        "certainty_score": 92.36554446941292,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840414,
+        "hand_position": "unnatural",
+        "certainty_score": 89.57458018234531,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840417,
+        "hand_position": "unnatural",
+        "certainty_score": 87.84320751027464,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840419,
+        "hand_position": "unnatural",
+        "certainty_score": 97.31472085436684,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840422,
+        "hand_position": "unnatural",
+        "certainty_score": 88.96301614943721,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840424,
+        "hand_position": "unnatural",
+        "certainty_score": 96.64530498663645,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840427,
+        "hand_position": "unnatural",
+        "certainty_score": 90.20318074777605,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840429,
+        "hand_position": "unnatural",
+        "certainty_score": 94.58824477436283,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840432,
+        "hand_position": "unnatural",
+        "certainty_score": 90.76028010954983,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840434,
+        "hand_position": "unnatural",
+        "certainty_score": 99.38346560033716,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840437,
+        "hand_position": "unnatural",
+        "certainty_score": 99.56182343676373,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840440,
+        "hand_position": "unnatural",
+        "certainty_score": 94.02772860351067,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840442,
+        "hand_position": "unnatural",
+        "certainty_score": 98.37949670771525,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840445,
+        "hand_position": "unnatural",
+        "certainty_score": 89.2565194340406,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840447,
+        "hand_position": "unnatural",
+        "certainty_score": 86.08610896794346,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840450,
+        "hand_position": "unnatural",
+        "certainty_score": 89.66908142948215,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840452,
+        "hand_position": "unnatural",
+        "certainty_score": 85.9044976045647,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840455,
+        "hand_position": "unnatural",
+        "certainty_score": 90.13599750915868,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840457,
+        "hand_position": "unnatural",
+        "certainty_score": 87.05145984745448,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840460,
+        "hand_position": "unnatural",
+        "certainty_score": 99.32247122844117,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840463,
+        "hand_position": "unnatural",
+        "certainty_score": 88.43478921148198,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840465,
+        "hand_position": "unnatural",
+        "certainty_score": 85.85324322452304,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840468,
+        "hand_position": "unnatural",
+        "certainty_score": 93.52937705048586,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840470,
+        "hand_position": "unnatural",
+        "certainty_score": 87.32448700798251,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840473,
+        "hand_position": "unnatural",
+        "certainty_score": 91.62965561544497,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840475,
+        "hand_position": "unnatural",
+        "certainty_score": 91.88183115324134,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840889,
+        "hand_position": "unnatural",
+        "certainty_score": 94.48643099663292,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840893,
+        "hand_position": "unnatural",
+        "certainty_score": 97.90600311345536,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840895,
+        "hand_position": "unnatural",
+        "certainty_score": 96.78982875624038,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840898,
+        "hand_position": "unnatural",
+        "certainty_score": 95.44050956027323,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840901,
+        "hand_position": "unnatural",
+        "certainty_score": 86.28175945118792,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840903,
+        "hand_position": "unnatural",
+        "certainty_score": 86.09925778257374,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840906,
+        "hand_position": "unnatural",
+        "certainty_score": 92.20955054914236,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840908,
+        "hand_position": "unnatural",
+        "certainty_score": 86.16564446990972,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744840911,
+        "hand_position": "unnatural",
+        "certainty_score": 98.703867797512,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744840913,
+        "hand_position": "unnatural",
+        "certainty_score": 95.63967903868283,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841364,
+        "hand_position": "unnatural",
+        "certainty_score": 92.95909029061578,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744841368,
+        "hand_position": "unnatural",
+        "certainty_score": 85.24742049717638,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744841371,
+        "hand_position": "unnatural",
+        "certainty_score": 98.5573534754938,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841373,
+        "hand_position": "unnatural",
+        "certainty_score": 98.07453598167753,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841376,
+        "hand_position": "unnatural",
+        "certainty_score": 97.43603090175392,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841378,
+        "hand_position": "unnatural",
+        "certainty_score": 99.90534562317917,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841381,
+        "hand_position": "unnatural",
+        "certainty_score": 91.97831204893221,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744841383,
+        "hand_position": "unnatural",
+        "certainty_score": 90.04100719320599,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744841386,
+        "hand_position": "unnatural",
+        "certainty_score": 96.89557202570181,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841389,
+        "hand_position": "unnatural",
+        "certainty_score": 97.74838826348208,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841391,
+        "hand_position": "unnatural",
+        "certainty_score": 97.04565523178908,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841394,
+        "hand_position": "unnatural",
+        "certainty_score": 86.20236498255069,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744841396,
+        "hand_position": "unnatural",
+        "certainty_score": 97.73600707099794,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841399,
+        "hand_position": "unnatural",
+        "certainty_score": 98.39906377464156,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841401,
+        "hand_position": "unnatural",
+        "certainty_score": 98.52047303653134,
+        "VAR_review": false
+    },
+    {
+        "frame": 1744841404,
+        "hand_position": "unnatural",
+        "certainty_score": 93.69932226469007,
+        "VAR_review": true
+    },
+    {
+        "frame": 1744841406,
+        "hand_position": "unnatural",
+        "certainty_score": 85.81863592922774,
+        "VAR_review": true
     }
 ]

@@ -1,41 +1,72 @@
 import os
 import json
+import boto3
 from typing import List, Dict
 from api.utils.logger import logger
+from botocore.exceptions import NoCredentialsError, ClientError
 
 # --- Constants ---
 DATA_DIR = "data"
 DECISION_LOGS_FILE = os.path.join(DATA_DIR, "decision_logs.json")
-os.makedirs(DATA_DIR, exist_ok=True)
+S3_BUCKET_NAME = 'raasid-decision-logs-bucket'  # S3 bucket name
+S3_KEY = 'decision_logs.json'  # S3 object key to store decision logs
 
+# Initialize S3 client
+s3_client = boto3.client('s3')
+
+# Local directory for fallback (for development purposes)
+os.makedirs(DATA_DIR, exist_ok=True)
 
 def load_decision_logs() -> List[Dict]:
     """
-    Load decision logs from file. Returns an empty list if file doesn't exist or is unreadable.
+    Load decision logs from S3. Falls back to local file if S3 is unavailable.
     """
-    if not os.path.exists(DECISION_LOGS_FILE):
-        logger.warning("Decision log file not found. Returning empty list.")
-        return []
-
     try:
-        with open(DECISION_LOGS_FILE, "r") as f:
-            data = f.read().strip()
-            return json.loads(data) if data else []
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse decision log file: {e}")
-        return []
-    except Exception as e:
-        logger.exception(f"Unexpected error while loading decision logs: {e}")
-        return []
+        # Try loading from S3
+        logger.info("Attempting to load decision logs from S3...")
+        response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=S3_KEY)
+        logs = json.loads(response['Body'].read().decode('utf-8'))
+        logger.info("Decision logs loaded from S3.")
+        return logs
+    except (NoCredentialsError, ClientError) as e:
+        logger.warning(f"Failed to load from S3: {e}. Falling back to local storage.")
+    
+    # Fallback to loading from local storage if S3 fails
+    if os.path.exists(DECISION_LOGS_FILE):
+        try:
+            with open(DECISION_LOGS_FILE, "r") as f:
+                data = f.read().strip()
+                return json.loads(data) if data else []
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse decision log file: {e}")
+        except Exception as e:
+            logger.exception(f"Unexpected error while loading decision logs: {e}")
 
+    logger.warning("Decision log file not found. Returning empty list.")
+    return []
 
 def save_decision_logs(logs: List[Dict]) -> None:
     """
-    Save decision logs to file in pretty-printed JSON format.
+    Save decision logs to S3. Falls back to local file if S3 is unavailable.
     """
+    try:
+        # Try saving to S3
+        logger.info("Attempting to save decision logs to S3...")
+        s3_client.put_object(
+            Bucket=S3_BUCKET_NAME,
+            Key=S3_KEY,
+            Body=json.dumps(logs, indent=4),
+            ContentType="application/json"
+        )
+        logger.info("Decision logs saved to S3.")
+    except (NoCredentialsError, ClientError) as e:
+        logger.error(f"Failed to save to S3: {e}. Falling back to local storage.")
+
+    # Fallback to saving to local storage if S3 fails
     try:
         with open(DECISION_LOGS_FILE, "w") as f:
             json.dump(logs, f, indent=4)
-        logger.info("Decision logs saved successfully.")
+        logger.info("Decision logs saved to local storage.")
     except Exception as e:
-        logger.exception(f"Failed to save decision logs: {e}")
+        logger.exception(f"Failed to save decision logs locally: {e}")
+

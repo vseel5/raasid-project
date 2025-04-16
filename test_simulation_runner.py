@@ -1,9 +1,8 @@
-import random
-import requests
 from api.utils.storage import load_decision_logs, save_decision_logs
 from api.utils.logger import logger
+import random
 
-# Function to log the decision
+# Define the log_decision function
 def log_decision(frame_number, hand_position, certainty_score, var_review_status):
     # Load existing logs (from S3 or local)
     logs = load_decision_logs()
@@ -23,32 +22,8 @@ def log_decision(frame_number, hand_position, certainty_score, var_review_status
     save_decision_logs(logs)
     logger.info(f"Decision for frame {frame_number} logged successfully.")
 
-# Function to send data to a given endpoint
-def send_post(endpoint: str, payload: dict, action_name: str):
-    """
-    Function to send a POST request to the given endpoint with the payload.
-    Logs the result of the request.
-
-    Args:
-    - endpoint (str): The API endpoint to which the data will be sent.
-    - payload (dict): The data to be sent in the POST request.
-    - action_name (str): The action name for logging purposes.
-    """
-    try:
-        # Sending the POST request to the specified endpoint
-        response = requests.post(endpoint, json=payload)
-
-        # Check if the request was successful
-        response.raise_for_status()
-
-        # Log the response data
-        logger.info(f"{action_name} request to {endpoint} was successful. Response: {response.json()}")
-    except requests.exceptions.RequestException as e:
-        # Log any errors that occur during the request
-        logger.error(f"Error sending {action_name} request to {endpoint}: {e}")
-
-# Simulate final decision and log it
-def simulate_final_decision(frame: int):
+# Simulate decision-making (use any logic for decision here)
+def simulate_final_decision(frame):
     decision = random.choice(["Handball Violation", "No Handball"])
     certainty = round(random.uniform(89, 99), 2)
     payload = {
@@ -58,16 +33,19 @@ def simulate_final_decision(frame: int):
         "VAR_review": certainty < 95
     }
     
-    # Log the decision after simulating it
+    # Log the decision after simulation
     log_decision(frame_number=frame, 
                  hand_position="unnatural",  # Example value, replace with actual logic
                  certainty_score=certainty, 
                  var_review_status=(certainty < 95))
     
-    send_post("/decision_making_ai", payload, "Final Decision")
+    print(f"Simulated decision for frame {frame}: {payload}")
 
 # Simulate the decision pipeline (you can add more simulations for other aspects)
 def run_simulation():
     frames = [101, 123, 150, 200]  # Example frame numbers
     for frame in frames:
         simulate_final_decision(frame)
+
+# Run the simulation
+run_simulation()

@@ -62,54 +62,35 @@ hr {
 </style>
 """, unsafe_allow_html=True)
 
-# --- Full Simulation Helper ---
-def run_full_simulation():
-    frame = 1
-    pose_data = {
-        "frame": frame,
-        "hand_position": np.random.choice(["natural", "unnatural"]),
-        "limb_angles": {
-            "elbow": round(np.random.uniform(30, 160), 1),
-            "shoulder": round(np.random.uniform(30, 160), 1)
-        },
-        "certainty_score": round(np.random.uniform(85, 98), 1)
-    }
+# --- Configuration ---
+BACKEND_URL = "http://127.0.0.1:8000/real_time_decision"  # Endpoint for real-time decision data
 
-    ball_contact_data = {
-        "frame": frame,
-        "ball_contact": True,
-        "impact_force": round(np.random.uniform(1.5, 4.5), 2),
-        "contact_duration": round(np.random.uniform(0.03, 0.08), 3),
-        "sensor_source": "Smart Ball Sensor"
-    }
-
-    event_context_data = {
-        "frame": frame,
-        "handball_decision": np.random.choice(["intentional", "accidental"]),
-        "certainty_score": round(np.random.uniform(85, 98), 1),
-        "rule_violation": bool(np.random.choice([True, False]))
-    }
-
+# --- Function to Fetch Real-Time Data from Backend ---
+def get_real_time_data():
     try:
-        pose_res = requests.post("http://127.0.0.1:8000/pose_estimation", json=pose_data).json().get("result", {})
-        ball_res = requests.post("http://127.0.0.1:8000/ball_contact_ai", json=ball_contact_data).json().get("result", {})
-        context_res = requests.post("http://127.0.0.1:8000/event_context_ai", json=event_context_data).json().get("result", {})
-
-        full_result = {}
-        full_result.update(pose_res)
-        full_result.update(ball_res)
-        full_result.update(context_res)
-
-        st.session_state.ai_result = full_result
-        st.session_state.decision_history.append(full_result)
-
-        distribution = requests.post("http://127.0.0.1:8000/output_distribution").json()
-        st.session_state.distribution_output = distribution
-        return True
-
+        response = requests.get(f"{BACKEND_URL}")
+        if response.status_code == 200:
+            return response.json()  # Assuming backend sends real-time data in JSON format
+        else:
+            st.error("Failed to fetch data from backend")
+            return None
     except Exception as e:
-        st.error(f"Simulation failed: {e}")
-        return False
+        st.error(f"Error fetching real-time data: {e}")
+        return None
+
+# --- Display Real-Time Decision Data ---
+def display_real_time_decisions():
+    st.title("Real-Time Decision Updates")
+    decision_display = st.empty()  # Placeholder for real-time updates
+    
+    while True:
+        data = get_real_time_data()  # Fetch real-time data from backend
+        if data:
+            decision_display.write(f"Frame: {data['frame']} | Decision: {data['final_decision']} | Confidence: {data['certainty_score']}%")
+        
+        time.sleep(1)  # Update every second to simulate real-time data
+        if st.button('Stop'):
+            break  # Allow user to stop the display loop if needed
 
 # --- PDF Generation Function ---
 def generate_pdf_report(decision_data, distribution_data, file_name="decision_report.pdf"):
@@ -162,7 +143,6 @@ def generate_pdf_report(decision_data, distribution_data, file_name="decision_re
 
     # Save the PDF
     pdf.output(file_name)
-
     return file_name
 
 # --- Header ---
@@ -184,7 +164,7 @@ if st.button("Run Full Simulation"):
             # Generate PDF report after successful simulation
             pdf_file = generate_pdf_report(st.session_state.ai_result, st.session_state.distribution_output)
             
-            # Provide the download link in the Streamlit interface
+            # Provide the download link in Streamlit interface
             with open(pdf_file, "rb") as f:
                 st.download_button(
                     label="Download PDF Report",
@@ -340,5 +320,4 @@ if st.session_state.decision_history:
             st.write(f"**Unnatural Pose:** {'Yes' if entry.get('pose_unusual') else 'No'}")
 else:
     st.info("Upload match content or run a simulation to begin.")
-
 

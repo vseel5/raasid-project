@@ -1,0 +1,7 @@
+{
+  "frame": 123,
+  "final_decision": "No Handball",
+  "certainty_score": 94.5,
+  "VAR_review": true,
+  "reason": "Uncertain decision \u2014 confidence below 95%"
+}

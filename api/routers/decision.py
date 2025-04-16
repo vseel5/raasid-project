@@ -1,83 +1,83 @@
-from fastapi import APIRouter, HTTPException, status
-from api.models.schemas import FinalDecisionInput, VAROverrideInput
+from fastapi import APIRouter
 from api.utils.storage import load_decision_logs, save_decision_logs
+import random
 from api.utils.logger import logger
+import requests
 
+# Initialize router
 router = APIRouter()
 
+# Function to log the decision
+def log_decision(frame_number, hand_position, certainty_score, var_review_status):
+    # Load existing logs (from S3 or local)
+    logs = load_decision_logs()
 
-@router.post("/decision_making_ai", status_code=status.HTTP_200_OK)
-def decision_making(data: FinalDecisionInput):
+    # Create a new decision log entry
+    decision = {
+        "frame": frame_number,
+        "hand_position": hand_position,
+        "certainty_score": certainty_score,
+        "VAR_review": var_review_status
+    }
+
+    # Append the new decision to the list of logs
+    logs.append(decision)
+
+    # Save the updated logs to S3 or local storage
+    save_decision_logs(logs)
+    logger.info(f"Decision for frame {frame_number} logged successfully.")
+
+# Function to send data to a given endpoint
+def send_post(endpoint: str, payload: dict, action_name: str):
     """
-    Endpoint to simulate AI-driven final decision-making.
-    Logs the decision, applies VAR review logic, and provides reasoning.
-    """
-    try:
-        logger.info("Decision Making Request: %s", data.json())
+    Function to send a POST request to the given endpoint with the payload.
+    Logs the result of the request.
 
-        reason = data.reason or (
-            "Uncertain decision — confidence below 95%" if data.certainty_score < 95 else
-            "Ball contacted unnatural hand position" if data.final_decision.lower() == "handball violation" else
-            "Hand position judged natural; no violation"
-        )
-
-        var_flag = data.VAR_review or data.certainty_score < 95
-
-        entry = {
-            "frame": data.frame,
-            "final_decision": data.final_decision,
-            "certainty_score": data.certainty_score,
-            "VAR_review": var_flag,
-            "reason": reason
-        }
-
-        logs = load_decision_logs()
-        logs.append(entry)
-        save_decision_logs(logs)
-
-        logger.info("Decision Logged: %s", entry)
-        return {"status": "Success", "message": "Decision processed", "reason": reason}
-
-    except Exception as e:
-        logger.exception("Decision Processing Failed")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
-
-
-@router.post("/var_review", status_code=status.HTTP_200_OK)
-def apply_var_override(data: VAROverrideInput):
-    """
-    Endpoint to allow manual VAR override of a decision.
+    Args:
+    - endpoint (str): The API endpoint to which the data will be sent.
+    - payload (dict): The data to be sent in the POST request.
+    - action_name (str): The action name for logging purposes.
     """
     try:
-        logs = load_decision_logs()
-        for decision in reversed(logs):
-            if decision["frame"] == data.frame:
-                decision["final_decision"] = data.override_decision
-                decision["VAR_review"] = True
-                save_decision_logs(logs)
-                logger.info("VAR Override Applied: Frame %s -> %s", data.frame, data.override_decision)
-                return {"status": "Success", "message": "VAR override updated"}
+        # Sending the POST request to the specified endpoint
+        response = requests.post(endpoint, json=payload)
 
-        logger.warning("Frame not found for VAR Override: %s", data.frame)
-        raise HTTPException(status_code=404, detail="Frame not found")
+        # Check if the request was successful
+        response.raise_for_status()
 
-    except Exception as e:
-        logger.exception("VAR Override Failed")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        # Log the response data
+        logger.info(f"{action_name} request to {endpoint} was successful. Response: {response.json()}")
+    except requests.exceptions.RequestException as e:
+        # Log any errors that occur during the request
+        logger.error(f"Error sending {action_name} request to {endpoint}: {e}")
 
-
-@router.get("/decision_logs", status_code=status.HTTP_200_OK)
-def get_logs():
+# Decision-making endpoint
+@router.post("/decision_making_ai")
+async def decision_making(data: dict):
     """
-    Endpoint to fetch all decision logs.
+    Handle decision-making logic (simulated handball detection logic).
+    Logs the decision to S3 or local storage.
     """
-    try:
-        logs = load_decision_logs()
-        logger.info("Fetched %d decision logs", len(logs))
-        return logs
-    except Exception as e:
-        logger.exception("Fetching Decision Logs Failed")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+    frame_number = data['frame']
+    hand_position = data['hand_position']
+    certainty_score = random.uniform(85, 100)  # Example score between 85 and 100
+    var_review_status = certainty_score < 95  # Assume VAR review is triggered for low confidence
+
+    # Call log_decision to save the decision
+    log_decision(frame_number=frame_number, 
+                 hand_position=hand_position, 
+                 certainty_score=certainty_score, 
+                 var_review_status=var_review_status)
+
+    # Additional logic for sending decision or processing (optional)
+    decision_result = {
+        "frame": frame_number,
+        "final_decision": "Handball Violation" if certainty_score > 90 else "No Handball",
+        "certainty_score": certainty_score,
+        "VAR_review": var_review_status
+    }
     
+    # Send the decision to the endpoint for processing or display
+    send_post("/decision_making_ai", decision_result, "Final Decision")
 
-
+    return decision_result

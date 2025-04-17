@@ -1,150 +1,369 @@
 # System Architecture
 
-## Overview
-The system architecture of Raasid outlines the key components and their interactions to provide a seamless, real-time handball detection system for football officiating. This architecture is designed to handle the complexities of video analysis, sensor data integration, and AI decision-making, ensuring accurate and timely decisions during matches.
+## Version Information
+- **Document Version**: 1.0.0
+- **Last Updated**: April 17, 2024
+- **Compatible System Version**: 1.0.0
 
-## Key Components
-The Raasid system is composed of several key components, each responsible for different aspects of the handball detection pipeline:
+## Table of Contents
+1. [Architecture Overview](#architecture-overview)
+2. [Core Components](#core-components)
+3. [Data Flow](#data-flow)
+4. [Technical Stack](#technical-stack)
+5. [Deployment Architecture](#deployment-architecture)
+6. [Security Architecture](#security-architecture)
+7. [Scalability](#scalability)
+8. [Monitoring](#monitoring)
 
-- **Frontend**: Provides the user interface for match video uploads, AI analysis, and decision review.
-- **Backend**: Handles data processing, API requests, and model inference.
-- **AI Models**: Perform pose estimation, ball contact detection, and event context classification.
-- **Data Storage**: Stores decision logs, video frames, and sensor data for long-term access and analysis.
-- **External Integrations**: Distributes decisions to external systems such as the referee smartwatch, TV broadcast, and cloud storage.
+## Architecture Overview
 
-### Frontend
-The frontend provides a dashboard for referees and analysts to interact with the system. It is built using **Streamlit**, a Python-based framework for building data applications. The main features of the frontend include:
-
-- **Video Upload**: Upload match videos or images for processing.
-- **AI Analysis Display**: Displays AI-generated decisions, including handball detection, event context, and decision confidence.
-- **History and Reports**: Shows the history of decisions made during the match and allows downloading of decision reports.
-
-The frontend communicates with the backend through HTTP requests, using the FastAPI endpoints exposed by the backend.
-
-### Backend
-The backend serves as the core of the Raasid system, processing incoming requests, running the AI models, and managing data flow. It is built using **FastAPI**, a fast, asynchronous web framework for Python. The backend performs the following functions:
-
-- **API Endpoints**: Exposes RESTful APIs for interacting with the system, including endpoints for pose estimation, ball contact detection, event context classification, and final decision-making.
-- **Model Inference**: Runs the trained AI models to process input data (video frames, sensor data, etc.) and generate predictions.
-- **Data Management**: Handles the storage and retrieval of decision logs, video frames, and sensor data.
-
-### AI Models
-The AI models in Raasid perform the following tasks:
-
-- **Pose Estimation**: Detects player hand positions and limb angles to assess whether a handball incident occurred.
-- **Ball Contact Detection**: Analyzes sensor data to detect ball contact, including impact force and contact duration.
-- **Event Context Classification**: Classifies handball incidents as intentional or accidental, and checks for rule violations.
-
-The models are trained on labeled data and deployed in the backend, where they can be queried via API endpoints.
-
-### Data Storage
-Data storage in Raasid is split between **local storage** for temporary data and **cloud storage** for long-term retention. The system stores the following types of data:
-
-- **Video Frames**: Captured from the match for pose estimation and ball contact analysis.
-- **Sensor Data**: Includes data from smart balls, tracking ball impact and contact duration.
-- **Decision Logs**: Logs all decisions made by the system, including frame numbers, final decisions, and certainty scores.
-
-Data is stored securely and is accessible for analysis, audit, and retraining purposes.
-
-### External Integrations
-Raasid supports integration with external systems to distribute decisions in real time. These systems include:
-
-- **Referee Smartwatch**: Receives the final decision in real time for immediate display to the referee.
-- **TV Broadcast**: Displays the handball decision and relevant match information to viewers.
-- **Cloud Storage**: Stores final decisions and related metadata for long-term access and analytics.
-
-These integrations are simulated using API calls to external endpoints, allowing the Raasid system to distribute decisions automatically after they are made.
-
-## Architecture Diagram
-
-Below is the architecture diagram of the Raasid system, illustrating the flow of data and interactions between different components.
-
-```plaintext
-+------------------+        +-------------------------+        +----------------------+
-|                  |        |                         |        |                      |
-|  Video Input     +------->+   Frontend (Streamlit)  +------->+   Backend (FastAPI)  |
-|                  |        |                         |        |                      |
-+------------------+        |   - Video Upload        |        |   - API Endpoints     |
-                            |   - AI Analysis Display |        |   - Model Inference   |
-                            |   - History and Reports |        |   - Data Management   |
-                            +-------------------------+        +----------------------+
-                                      |
-                                      |
-                            +----------------------+
-                            |                      |
-                            |   AI Models          |
-                            |   - Pose Estimation  |
-                            |   - Ball Contact     |
-                            |   - Event Context    |
-                            +----------------------+
-                                      |
-                                      |
-                           +--------------------------+
-                           |                          |
-                           |   External Integrations  |
-                           |   - Referee Smartwatch   |
-                           |   - TV Broadcast         |
-                           |   - Cloud Storage        |
-                           +--------------------------+
+### System Diagram
+```mermaid
+graph TD
+    A[Client] -->|HTTP/WebSocket| B[API Gateway]
+    B -->|gRPC| C[Video Processing]
+    B -->|REST| D[AI Models]
+    B -->|REST| E[Decision Engine]
+    C -->|Events| F[Message Queue]
+    D -->|Events| F
+    E -->|Events| F
+    F -->|Data| G[Database]
+    F -->|Logs| H[Monitoring]
 ```
 
-## Deployment
-Raasid is designed to be deployed in a containerized environment using Docker. The following components are containerized:
+### Component Interaction
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API
+    participant Video
+    participant AI
+    participant Decision
+    participant DB
+    
+    Client->>API: Upload Video
+    API->>Video: Process Frame
+    Video->>AI: Analyze Frame
+    AI->>Decision: Make Decision
+    Decision->>DB: Store Result
+    DB-->>Client: Return Result
+```
 
-- **Frontend**: The Streamlit dashboard is packaged as a Docker container for easy deployment.
-- **Backend**: The FastAPI backend is also containerized to ensure consistent deployment across different environments.
-- **AI Models**: The AI models are loaded into the backend containers and used for real-time inference.
+## Core Components
 
-Deployment is straightforward and involves setting up the backend and frontend containers, along with any necessary dependencies (e.g., TensorFlow, OpenCV) in the environment.
+### Video Processing Pipeline
+```python
+# Video processing pipeline
+class VideoProcessor:
+    def __init__(self):
+        self.frame_extractor = FrameExtractor()
+        self.feature_detector = FeatureDetector()
+        self.analyzer = FrameAnalyzer()
+
+    def process_video(self, video_path: str) -> List[Dict]:
+        frames = self.frame_extractor.extract_frames(video_path)
+        features = self.feature_detector.detect_features(frames)
+        analysis = self.analyzer.analyze_frames(features)
+        return analysis
+```
+
+### AI Models
+```python
+# AI model manager
+class ModelManager:
+    def __init__(self):
+        self.context_model = ContextAnalysisModel()
+        self.pose_model = PoseEstimationModel()
+        self.ball_model = BallDetectionModel()
+
+    def analyze_frame(self, frame: np.ndarray) -> Dict:
+        context = self.context_model.analyze(frame)
+        pose = self.pose_model.estimate(frame)
+        ball = self.ball_model.detect(frame)
+        return {
+            'context': context,
+            'pose': pose,
+            'ball': ball
+        }
+```
+
+### Decision Engine
+```python
+# Decision engine
+class DecisionEngine:
+    def __init__(self):
+        self.rules = RuleEngine()
+        self.confidence = ConfidenceCalculator()
+        self.history = DecisionHistory()
+
+    def make_decision(self, analysis: Dict) -> Dict:
+        rule_result = self.rules.evaluate(analysis)
+        confidence = self.confidence.calculate(analysis)
+        decision = self.combine_results(rule_result, confidence)
+        self.history.store(decision)
+        return decision
+```
+
+## Data Flow
+
+### Request Flow
+```python
+# Request handler
+class RequestHandler:
+    def handle_request(self, request: Dict) -> Dict:
+        # Validate request
+        self.validator.validate(request)
+        
+        # Process video
+        video_data = self.video_processor.process(request['video'])
+        
+        # Analyze frames
+        analysis = self.model_manager.analyze(video_data)
+        
+        # Make decision
+        decision = self.decision_engine.make_decision(analysis)
+        
+        # Store results
+        self.database.store(decision)
+        
+        return decision
+```
+
+### Event Flow
+```python
+# Event handler
+class EventHandler:
+    def handle_event(self, event: Dict) -> None:
+        # Publish event
+        self.message_queue.publish(event)
+        
+        # Process event
+        if event['type'] == 'frame_processed':
+            self.process_frame(event['data'])
+        elif event['type'] == 'decision_made':
+            self.handle_decision(event['data'])
+```
+
+## Technical Stack
+
+### Backend Stack
+```yaml
+# Backend stack
+backend:
+  framework: FastAPI
+  language: Python 3.8+
+  database: PostgreSQL
+  cache: Redis
+  message_queue: RabbitMQ
+  monitoring: Prometheus + Grafana
+```
+
+### AI Stack
+```yaml
+# AI stack
+ai:
+  framework: PyTorch
+  models:
+    - Context Analysis (CNN)
+    - Pose Estimation (ResNet50)
+    - Ball Detection (YOLOv5)
+  training: PyTorch Lightning
+  optimization: ONNX Runtime
+```
+
+### Frontend Stack
+```yaml
+# Frontend stack
+frontend:
+  framework: Streamlit
+  visualization: Plotly
+  state_management: Redux
+  styling: Tailwind CSS
+```
+
+## Deployment Architecture
+
+### Container Architecture
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  api:
+    image: raasid-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+
+  video_processor:
+    image: raasid-video
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+
+  ai_models:
+    image: raasid-models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: raasid
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+  redis:
+    image: redis:6
+
+  rabbitmq:
+    image: rabbitmq:3-management
+```
+
+### Kubernetes Architecture
+```yaml
+# kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: raasid-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: raasid-api
+  template:
+    metadata:
+      labels:
+        app: raasid-api
+    spec:
+      containers:
+      - name: api
+        image: raasid-api
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+```
+
+## Security Architecture
+
+### Authentication
+```python
+# Authentication manager
+class AuthManager:
+    def authenticate(self, request: Request) -> bool:
+        token = self.extract_token(request)
+        return self.validate_token(token)
+
+    def authorize(self, user: User, resource: str) -> bool:
+        return self.check_permissions(user, resource)
+```
+
+### Data Protection
+```python
+# Data protection
+class DataProtector:
+    def encrypt_data(self, data: Dict) -> bytes:
+        return self.encryptor.encrypt(json.dumps(data))
+
+    def decrypt_data(self, encrypted: bytes) -> Dict:
+        return json.loads(self.encryptor.decrypt(encrypted))
+```
 
 ## Scalability
-The Raasid system is designed to be scalable to handle multiple matches simultaneously. Key scalability features include:
 
-- **Load Balancing**: Multiple backend instances can be deployed to balance the load of incoming requests from the frontend or external systems.
-- **Cloud Storage**: Data storage is handled by cloud platforms, which can scale to accommodate large amounts of match data and decision logs.
-- **Model Inference**: The system is optimized for fast model inference, ensuring real-time decision-making even under high load conditions.
+### Horizontal Scaling
+```python
+# Scaling manager
+class ScalingManager:
+    def scale_service(self, service: str, replicas: int) -> None:
+        if service == 'api':
+            self.scale_api(replicas)
+        elif service == 'video':
+            self.scale_video(replicas)
+        elif service == 'models':
+            self.scale_models(replicas)
+```
 
-## Future Enhancements
-The system architecture will be enhanced in future iterations of the project:
+### Load Balancing
+```python
+# Load balancer
+class LoadBalancer:
+    def distribute_load(self, request: Request) -> str:
+        service = self.select_service(request)
+        instance = self.select_instance(service)
+        return instance
+```
 
-- **Microservices Architecture**: Breaking down the backend into smaller microservices to handle specific tasks (pose estimation, ball contact detection, etc.) for better maintainability and scalability.
-- **Distributed Data Processing**: Implementing distributed data processing to handle large-scale video and sensor data more efficiently.
-- **Cloud-Native Features**: Leveraging cloud-native features, such as Kubernetes for container orchestration and AWS Lambda for serverless model inference.
+## Monitoring
 
-## Technology Used
-- **Frontend**: Streamlit for building interactive dashboards.
-- **Backend**: FastAPI for creating fast, scalable APIs.
-- **AI Models**: TensorFlow, MediaPipe, and Scikit-learn for model training and inference.
-- **Data Storage**: Local storage for temporary data, cloud storage (e.g., AWS S3, Azure Blob Storage) for long-term storage.
-- **Deployment**: Docker for containerization and deployment.
+### Metrics Collection
+```python
+# Metrics collector
+class MetricsCollector:
+    def collect_metrics(self) -> Dict:
+        return {
+            'api_metrics': self.collect_api_metrics(),
+            'model_metrics': self.collect_model_metrics(),
+            'system_metrics': self.collect_system_metrics()
+        }
+```
 
-## Getting Started
-To set up the system architecture locally, follow these steps:
+### Alerting
+```python
+# Alert manager
+class AlertManager:
+    def check_alerts(self, metrics: Dict) -> List[str]:
+        alerts = []
+        if metrics['cpu_usage'] > 90:
+            alerts.append('High CPU usage')
+        if metrics['memory_usage'] > 80:
+            alerts.append('High memory usage')
+        return alerts
+```
 
-1. Clone the repository and set up the environment:
-   ```bash
-   git clone https://github.com/vseel5/raasid-project
-   cd raasid-project
-   python -m venv raasid-env
-   raasid-env\Scripts\activate  # On macOS/Linux: source raasid-env/bin/activate
-   pip install -r requirements.txt
-   ```
+## Best Practices
 
-2. Build and start the Docker containers for the backend and frontend:
-   ```bash
-   docker-compose up --build
-   ```
+### Development
+1. Follow SOLID principles
+2. Write clean code
+3. Document thoroughly
+4. Test extensively
+5. Review regularly
 
-3. Access the frontend at `http://localhost:8501` and interact with the system.
+### Deployment
+1. Use containers
+2. Implement CI/CD
+3. Monitor performance
+4. Backup regularly
+5. Plan for failure
 
-4. Start the FastAPI backend:
-   ```bash
-   uvicorn api.main:app --reload
-   ```
+### Maintenance
+1. Regular updates
+2. Security patches
+3. Performance tuning
+4. Capacity planning
+5. Documentation updates
 
-## License
-This project is licensed under the MIT License – see the LICENSE file for details.
+## Support
+For architecture-related issues:
+- Email: architecture@raasid.com
+- Documentation: https://raasid.com/docs/architecture
+- GitHub Issues: https://github.com/vseel5/raasid-project/issues
 
-## Authors
-- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
-- [GitHub Profile](https://github.com/vseel5/raasid-project)
+---
+
+*Last updated: April 17, 2024*

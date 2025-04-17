@@ -1,85 +1,320 @@
 # Security Documentation
 
-## Overview
-This document outlines the security measures implemented in the Raasid system to protect both the system’s infrastructure and user data. Ensuring the confidentiality, integrity, and availability of data is a core part of the system’s design. The document covers aspects of authentication, data encryption, secure coding practices, and compliance with relevant security standards.
+## Version Information
+- **Document Version**: 1.0.0
+- **Last Updated**: April 17, 2024
+- **Compatible System Version**: 1.0.0
 
-## Security Principles
+## Related Documentation
+- [Admin Dashboard](admin-dashboard.md) - For security settings and user management
+- [Data Strategy](data-strategy.md) - For data protection and privacy controls
+- [System Architecture](system-architecture.md) - For security architecture and infrastructure
+- [Shared Components](shared-components.md) - For common security utilities
 
-### 1. **Data Privacy**
-Data privacy is fundamental to protecting user information. The system ensures that all data, including video frames, sensor data, and AI decisions, is handled securely and in accordance with privacy regulations.
+## Table of Contents
+1. [Security Overview](#security-overview)
+2. [Authentication](#authentication)
+3. [Authorization](#authorization)
+4. [Data Protection](#data-protection)
+5. [Network Security](#network-security)
+6. [API Security](#api-security)
+7. [Model Security](#model-security)
+8. [Compliance](#compliance)
 
-- **Data Minimization**: Only the data necessary for the functioning of the system is collected and stored. Any sensitive or personally identifiable information (PII) is avoided or anonymized.
-- **Retention Period**: Data is only retained for as long as necessary for system operation and analytics. Once the data is no longer required, it is securely deleted.
+## Security Overview
 
-### 2. **Encryption**
-All sensitive data is encrypted, both in transit and at rest, to prevent unauthorized access.
+### Security Architecture
+```mermaid
+graph TD
+    A[Client] -->|HTTPS| B[API Gateway]
+    B -->|JWT| C[Authentication]
+    C -->|RBAC| D[Authorization]
+    D -->|Encryption| E[Data Protection]
+    E -->|TLS| F[Network Security]
+```
 
-- **In Transit**: All communication between the frontend, backend, and external systems (e.g., APIs, cloud services) is encrypted using HTTPS/TLS.
-- **At Rest**: Data stored in databases or cloud storage is encrypted using industry-standard encryption algorithms (e.g., AES-256).
-- **Encryption Keys**: Encryption keys are securely managed and rotated periodically to ensure the protection of sensitive data.
+### Security Layers
+| Layer | Components | Protection |
+|-------|------------|------------|
+| Application | API, Models | Authentication, Authorization |
+| Data | Storage, Cache | Encryption, Access Control |
+| Network | Firewall, VPN | Traffic Control, Isolation |
+| Infrastructure | Servers, Containers | Hardening, Patching |
 
-### 3. **Authentication & Authorization**
-The Raasid system employs secure authentication and authorization methods to ensure that only authorized users can access the system’s resources.
+## Authentication
 
-- **API Authentication**: Use of **JWT (JSON Web Tokens)** or **OAuth 2.0** for securing API endpoints. API requests are authenticated with tokens that are issued after a successful login.
-- **Role-Based Access Control (RBAC)**: Users are assigned roles (e.g., admin, referee) and are granted access to different parts of the system based on their role. This minimizes the risk of unauthorized access.
-- **Multi-Factor Authentication (MFA)**: For sensitive operations, such as manual VAR overrides, multi-factor authentication is required to add an extra layer of security.
+### JWT Implementation
+```python
+# JWT authentication
+class JWTAuth:
+    def generate_token(self, user: User) -> str:
+        return jwt.encode({
+            'user_id': user.id,
+            'role': user.role,
+            'exp': datetime.now() + timedelta(hours=1)
+        }, SECRET_KEY, algorithm='HS256')
 
-### 4. **Input Validation**
-To prevent injection attacks and other forms of exploitation, all user inputs are validated thoroughly.
+    def validate_token(self, token: str) -> Dict:
+        try:
+            return jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        except jwt.InvalidTokenError:
+            raise SecurityError("Invalid token")
+```
 
-- **Sanitization**: All user inputs are sanitized to remove potentially dangerous characters (e.g., SQL injection, XSS).
-- **Validation**: Ensure that all inputs follow the expected format, such as numeric values for impact force or Boolean flags for handball decisions.
+### Multi-Factor Authentication
+```python
+# MFA implementation
+class MFA:
+    def setup_mfa(self, user: User) -> Dict:
+        return {
+            'secret': self.generate_secret(),
+            'qr_code': self.generate_qr_code(),
+            'backup_codes': self.generate_backup_codes()
+        }
 
-### 5. **API Security**
-The Raasid system uses secure methods to protect API endpoints and prevent unauthorized access.
+    def verify_mfa(self, user: User, code: str) -> bool:
+        return self.verify_totp(user.mfa_secret, code)
+```
 
-- **Rate Limiting**: Prevent abuse of API endpoints by limiting the number of requests that can be made in a given time frame. This mitigates DDoS attacks and brute force attempts.
-- **API Gateway**: Use of an API gateway to manage authentication, routing, and request filtering to ensure that only authorized requests are processed.
-- **Logging and Monitoring**: All API requests are logged for audit purposes. Security incidents are monitored in real-time using logging tools and threat detection systems.
+For token management implementation, see [Shared Components - Token Manager](#token-manager)
 
-### 6. **Secure Deployment**
-The Raasid system is deployed in a secure environment to ensure that the infrastructure is protected from attacks.
+## Authorization
 
-- **Environment Isolation**: Use of isolated environments (e.g., staging and production) to ensure that testing does not impact the production environment.
-- **Firewalls and Network Security**: A firewall is configured to restrict unauthorized access to critical system components. Only trusted IP addresses are allowed to connect to the backend and database servers.
-- **Vulnerability Scanning**: The system’s dependencies and infrastructure are regularly scanned for vulnerabilities using tools such as **OWASP Dependency-Check** and **Snyk**.
+### Role-Based Access Control
+```python
+# RBAC implementation
+class RBAC:
+    def check_permission(self, user: User, resource: str, action: str) -> bool:
+        role = self.get_role(user.role)
+        return self.has_permission(role, resource, action)
 
-### 7. **Incident Response**
-An incident response plan is in place to handle security breaches and vulnerabilities.
+    def get_role(self, role_name: str) -> Role:
+        return self.db.get_role(role_name)
+```
 
-- **Response Plan**: In the event of a security incident, the system administrator will follow a predefined set of steps to contain and resolve the issue, including communication with stakeholders and regulatory bodies if necessary.
-- **Forensics**: Logs and monitoring tools are used to investigate security breaches, identify root causes, and prevent future incidents.
+### Permission Matrix
+```python
+# Permission management
+class PermissionManager:
+    def define_permissions(self) -> Dict:
+        return {
+            'admin': {
+                'users': ['create', 'read', 'update', 'delete'],
+                'models': ['create', 'read', 'update', 'delete'],
+                'system': ['configure', 'monitor']
+            },
+            'operator': {
+                'users': ['read'],
+                'models': ['read', 'update'],
+                'system': ['monitor']
+            }
+        }
+```
 
-### 8. **Compliance with Regulations**
-The Raasid system is designed to comply with relevant data protection laws and regulations, ensuring that it adheres to security and privacy standards.
+For access control implementation, see [Shared Components - Access Control](#access-control)
 
-- **GDPR Compliance**: The system is designed to meet the General Data Protection Regulation (GDPR) requirements for the collection, processing, and storage of personal data. This includes ensuring that data is anonymized and that users have control over their data.
-- **CCPA Compliance**: The system also complies with the California Consumer Privacy Act (CCPA) to protect the privacy rights of California residents.
-- **Other Regulations**: The system is designed to be flexible enough to comply with other relevant data protection and security regulations in different jurisdictions.
+## Data Protection
 
-## Best Practices for Developers
+### Encryption
+```python
+# Data encryption
+class DataEncryptor:
+    def encrypt_data(self, data: Dict) -> bytes:
+        return self.encryptor.encrypt(
+            json.dumps(data).encode(),
+            self.get_key()
+        )
 
-### 1. **Secure Coding**
-Developers should adhere to secure coding practices to avoid common security vulnerabilities, including:
+    def decrypt_data(self, encrypted: bytes) -> Dict:
+        return json.loads(
+            self.encryptor.decrypt(encrypted, self.get_key())
+        )
+```
 
-- **Avoid hardcoded secrets**: Never store sensitive information (e.g., passwords, API keys) in the codebase. Use environment variables or secure secret management tools like **AWS Secrets Manager** or **HashiCorp Vault**.
-- **Input Sanitization**: Always sanitize and validate user inputs before processing them.
-- **Use prepared statements**: When interacting with databases, always use prepared statements to prevent SQL injection attacks.
+### Secure Storage
+```python
+# Secure storage
+class SecureStorage:
+    def store_sensitive_data(self, data: Dict) -> str:
+        encrypted = self.encryptor.encrypt_data(data)
+        storage_id = self.generate_id()
+        self.db.store_encrypted(storage_id, encrypted)
+        return storage_id
 
-### 2. **Regular Security Audits**
-Security audits should be performed periodically to identify and address any potential vulnerabilities in the system. This includes:
+    def retrieve_sensitive_data(self, storage_id: str) -> Dict:
+        encrypted = self.db.get_encrypted(storage_id)
+        return self.encryptor.decrypt_data(encrypted)
+```
 
-- **Code Reviews**: Regular peer code reviews to ensure that security best practices are followed.
-- **Penetration Testing**: Conduct regular penetration tests to find weaknesses in the system and infrastructure.
+For data validation and sanitization, see [Shared Components - Data Validator](#data-validator)
 
-### 3. **Secure Deployment Practices**
-- **Update Dependencies**: Keep all dependencies up to date to mitigate vulnerabilities.
-- **Automated Security Scanning**: Integrate security scanning tools into the CI/CD pipeline to identify vulnerabilities early in the development lifecycle.
+## Network Security
 
-## License
-This project is licensed under the MIT License – see the LICENSE file for details.
+### Firewall Rules
+```python
+# Firewall configuration
+class FirewallManager:
+    def configure_rules(self) -> List[Dict]:
+        return [
+            {
+                'source': '0.0.0.0/0',
+                'destination': 'api.raasid.com',
+                'port': 443,
+                'protocol': 'tcp',
+                'action': 'allow'
+            },
+            {
+                'source': '0.0.0.0/0',
+                'destination': '*',
+                'port': '*',
+                'protocol': '*',
+                'action': 'deny'
+            }
+        ]
+```
 
-## Authors
-- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
-- [GitHub Profile](https://github.com/vseel5/raasid-project)
+### SSL/TLS Configuration
+```python
+# SSL/TLS management
+class SSLManager:
+    def configure_ssl(self) -> Dict:
+        return {
+            'certificate': self.get_certificate(),
+            'private_key': self.get_private_key(),
+            'cipher_suites': self.get_cipher_suites(),
+            'protocols': ['TLSv1.2', 'TLSv1.3']
+        }
+```
+
+## API Security
+
+### Rate Limiting
+```python
+# Rate limiting
+class RateLimiter:
+    def check_rate_limit(self, client_id: str) -> bool:
+        current = self.get_current_requests(client_id)
+        limit = self.get_rate_limit(client_id)
+        return current < limit
+
+    def get_rate_limit(self, client_id: str) -> int:
+        return self.db.get_client_limit(client_id)
+```
+
+### Input Validation
+```python
+# Input validation
+class InputValidator:
+    def validate_input(self, data: Dict) -> bool:
+        return (
+            self.validate_schema(data) and
+            self.sanitize_input(data) and
+            self.check_bounds(data)
+        )
+
+    def sanitize_input(self, data: Dict) -> Dict:
+        return {
+            k: self.sanitize_value(v)
+            for k, v in data.items()
+        }
+```
+
+## Model Security
+
+### Model Protection
+```python
+# Model protection
+class ModelProtector:
+    def protect_model(self, model: torch.nn.Module) -> Dict:
+        return {
+            'encrypted_weights': self.encrypt_weights(model),
+            'signature': self.sign_model(model),
+            'access_control': self.set_access_control(model)
+        }
+
+    def encrypt_weights(self, model: torch.nn.Module) -> bytes:
+        return self.encryptor.encrypt(model.state_dict())
+```
+
+### Access Control
+```python
+# Model access control
+class ModelAccessControl:
+    def check_model_access(self, user: User, model: str) -> bool:
+        return (
+            self.check_license(user) and
+            self.check_permissions(user, model) and
+            self.validate_request(user, model)
+        )
+
+    def check_license(self, user: User) -> bool:
+        return self.license_manager.validate(user.license)
+```
+
+## Compliance
+
+### GDPR Compliance
+```python
+# GDPR compliance
+class GDPRCompliance:
+    def ensure_compliance(self, data: Dict) -> bool:
+        return (
+            self.check_data_minimization(data) and
+            self.check_purpose_limitation(data) and
+            self.check_storage_limitation(data) and
+            self.check_rights_provision(data)
+        )
+
+    def check_data_minimization(self, data: Dict) -> bool:
+        return self.validator.validate_minimization(data)
+```
+
+### Audit Logging
+```python
+# Audit logging
+class AuditLogger:
+    def log_security_event(self, event: Dict) -> None:
+        self.db.log_event({
+            'timestamp': datetime.now(),
+            'event_type': event['type'],
+            'user_id': event['user_id'],
+            'details': event['details'],
+            'ip_address': event['ip']
+        })
+
+    def get_audit_logs(self, filters: Dict) -> List[Dict]:
+        return self.db.get_audit_logs(filters)
+```
+
+## Best Practices
+
+### Development
+1. Follow security standards
+2. Implement secure coding
+3. Regular security testing
+4. Document security measures
+5. Review code regularly
+
+### Deployment
+1. Secure configuration
+2. Regular updates
+3. Monitoring setup
+4. Access control
+5. Backup strategy
+
+### Maintenance
+1. Security patches
+2. Regular audits
+3. Policy updates
+4. Training
+5. Documentation
+
+## Support
+For security-related issues:
+- Email: security@raasid.com
+- Documentation: https://raasid.com/docs/security
+- GitHub Issues: https://github.com/vseel5/raasid-project/issues
+
+---
+
+*Last updated: April 17, 2024*

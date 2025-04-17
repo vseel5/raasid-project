@@ -1,97 +1,366 @@
 # Testing Strategy
 
-## Overview
-The testing strategy for Raasid outlines the approach to validating and verifying the functionality, performance, and security of the system. This strategy ensures that the system meets the requirements for handball detection, decision-making, and real-time integration with external systems. It covers unit testing, integration testing, performance testing, and end-to-end testing to ensure reliability and accuracy.
+## Version Information
+- **Document Version**: 1.0.0
+- **Last Updated**: April 17, 2024
+- **Compatible System Version**: 1.0.0
 
-## Testing Levels
+## Table of Contents
+1. [Testing Approach](#testing-approach)
+2. [Test Levels](#test-levels)
+3. [Test Types](#test-types)
+4. [Test Environment](#test-environment)
+5. [Test Data Management](#test-data-management)
+6. [Test Automation](#test-automation)
+7. [Quality Gates](#quality-gates)
+8. [Best Practices](#best-practices)
 
-### 1. Unit Testing
-Unit testing is performed on individual components of the system to ensure that each part functions correctly in isolation. Key areas covered by unit tests include:
+## Testing Approach
 
-- **AI Models**: Testing the individual models for pose estimation, ball contact detection, and event context classification.
-  - **Pose Estimation**: Verifying the accuracy of hand positioning and limb angle detection.
-  - **Ball Contact Detection**: Ensuring the correct identification of ball contact based on sensor data.
-  - **Event Context Classification**: Checking the correct classification of handball incidents as intentional or accidental.
+### Testing Pyramid
+```mermaid
+graph TD
+    A[E2E Tests] --> B[Integration Tests]
+    B --> C[Unit Tests]
+    D[Manual Tests] --> A
+    D --> B
+    D --> C
+```
 
-- **API Endpoints**: Testing the API endpoints to verify that the inputs are correctly processed and the outputs are as expected.
+### Test Coverage Goals
+| Test Type | Coverage Target | Measurement |
+|-----------|-----------------|-------------|
+| Unit Tests | > 90% | Line coverage |
+| Integration Tests | > 80% | API coverage |
+| E2E Tests | > 70% | Feature coverage |
+| Manual Tests | 100% | Critical paths |
 
-**Tools Used**:
-- `pytest`: A framework for writing unit tests in Python.
-- `unittest`: A built-in Python library for unit testing.
+## Test Levels
 
-### 2. Integration Testing
-Integration testing ensures that the components of the system interact correctly with each other. This includes testing the communication between the frontend, backend, AI models, and external systems. Key integration tests include:
+### Unit Testing
+```python
+# Unit test example
+class TestPoseEstimation(unittest.TestCase):
+    def setUp(self):
+        self.model = PoseEstimationModel()
+        self.test_image = load_test_image()
 
-- **Frontend and Backend Communication**: Verifying that the frontend can successfully send requests to the backend and receive correct responses.
-- **AI Model Integration**: Testing that the AI models are correctly integrated with the backend and return accurate predictions.
-- **External System Integration**: Simulating the distribution of decisions to the referee smartwatch, TV broadcast, and cloud storage, ensuring that the decisions are transmitted correctly.
+    def test_pose_detection(self):
+        result = self.model.detect_pose(self.test_image)
+        self.assertIsNotNone(result)
+        self.assertGreater(len(result.keypoints), 0)
 
-**Tools Used**:
-- `requests`: A Python library for making HTTP requests, used to test API communication.
-- `pytest`: Used for integration tests to ensure end-to-end data flow.
+    def test_confidence_threshold(self):
+        result = self.model.detect_pose(self.test_image, confidence=0.8)
+        self.assertGreaterEqual(result.confidence, 0.8)
+```
 
-### 3. Performance Testing
-Performance testing is essential to ensure that the system can handle the load of multiple simultaneous requests, especially during live matches. This includes:
+### Integration Testing
+```python
+# Integration test example
+class TestAPIIntegration(unittest.TestCase):
+    def setUp(self):
+        self.client = TestClient(app)
 
-- **Load Testing**: Simulating a high volume of requests to measure the system's ability to handle traffic and respond quickly.
-- **Stress Testing**: Pushing the system beyond its limits to identify the breaking point and ensure the system can recover gracefully.
-- **Latency Testing**: Measuring the response time of the system, particularly the backend API and AI inference, to ensure real-time decision-making.
+    def test_full_pipeline(self):
+        # Test pose estimation
+        pose_response = self.client.post('/api/v1/pose/estimate', json={
+            'image': 'base64_encoded_image',
+            'parameters': {'confidence_threshold': 0.7}
+        })
+        self.assertEqual(pose_response.status_code, 200)
 
-**Tools Used**:
-- `Locust`: An open-source load testing tool that simulates user traffic.
-- `Apache JMeter`: A tool for performance testing and load generation.
-- `time`: A Python module for measuring response times.
+        # Test ball detection
+        ball_response = self.client.post('/api/v1/ball/detect', json={
+            'image': 'base64_encoded_image',
+            'parameters': {'confidence_threshold': 0.8}
+        })
+        self.assertEqual(ball_response.status_code, 200)
 
-### 4. End-to-End Testing
-End-to-end testing verifies that the system works as expected from start to finish, ensuring that all components (frontend, backend, AI models, and external integrations) work together to deliver the desired functionality. This includes:
+        # Test decision making
+        decision_response = self.client.post('/api/v1/decision/make', json={
+            'pose_data': pose_response.json(),
+            'ball_data': ball_response.json()
+        })
+        self.assertEqual(decision_response.status_code, 200)
+```
 
-- **Full Simulation**: Running a complete match simulation, from video upload and AI analysis to final decision distribution.
-- **Decision Accuracy**: Verifying that the AI models produce accurate decisions based on pose, ball contact, and event context.
-- **Real-Time Workflow**: Ensuring that the decisions are distributed in real time to external systems (e.g., referee smartwatch, TV broadcast).
+### End-to-End Testing
+```python
+# E2E test example
+class TestSystemE2E(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+        self.driver.get('http://localhost:8501')
 
-**Tools Used**:
-- `Selenium`: A web testing framework for automating the frontend user interactions.
-- `pytest`: To execute end-to-end tests and validate the entire workflow.
+    def test_video_analysis_flow(self):
+        # Upload video
+        upload_button = self.driver.find_element_by_id('upload-button')
+        upload_button.send_keys('test_video.mp4')
 
-## Test Coverage
-Test coverage is a critical metric for ensuring that all parts of the system are tested. The following areas should be covered:
+        # Start analysis
+        start_button = self.driver.find_element_by_id('start-analysis')
+        start_button.click()
 
-- **AI Model Testing**: Coverage for all major AI model components, including pose estimation, ball contact detection, and event context classification.
-- **API Endpoints**: Testing all exposed API endpoints, including pose estimation, ball contact, event context, and decision distribution.
-- **Frontend and Backend Communication**: Ensuring that the data flows correctly between the frontend and backend, and that the backend handles requests appropriately.
-- **External System Integrations**: Verifying that data is correctly transmitted to external systems (e.g., referee smartwatch, TV broadcast, cloud storage).
+        # Wait for results
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.ID, 'results'))
+        )
 
-## Continuous Integration and Continuous Delivery (CI/CD)
-The Raasid system integrates a CI/CD pipeline to automate the testing and deployment process. The CI/CD pipeline ensures that:
+        # Verify results
+        results = self.driver.find_element_by_id('results')
+        self.assertIn('Handball Detected', results.text)
+```
 
-- **Automated Tests**: Unit, integration, performance, and end-to-end tests are automatically run whenever new code is pushed to the repository.
-- **Code Quality Checks**: Tools like `flake8` and `pylint` are used to ensure that the code follows best practices and adheres to coding standards.
-- **Deployment Automation**: After passing all tests, the code is automatically deployed to staging and production environments using Docker and Kubernetes.
+## Test Types
 
-**Tools Used**:
-- **GitHub Actions**: For automating the testing and deployment process.
-- **Docker**: For containerizing the application and ensuring consistency across environments.
-- **Kubernetes**: For orchestrating containerized applications and scaling the system.
+### Functional Testing
+```python
+# Functional test example
+class TestFunctional(unittest.TestCase):
+    def test_pose_estimation_functionality(self):
+        model = PoseEstimationModel()
+        result = model.detect_pose(test_image)
+        self.assertTrue(self.verify_pose_estimation(result))
 
-## Test Reporting and Monitoring
-Testing results are tracked and reported to ensure continuous improvement. The following approaches are used:
+    def test_ball_detection_functionality(self):
+        model = BallDetectionModel()
+        result = model.detect_ball(test_image)
+        self.assertTrue(self.verify_ball_detection(result))
+```
 
-- **Test Reports**: Test results are automatically generated and uploaded to a reporting dashboard for review.
-- **Error Logging**: Any errors or failures during tests are logged and monitored to identify areas for improvement.
-- **Performance Metrics**: Latency, throughput, and other performance metrics are tracked to ensure that the system meets real-time requirements.
+### Performance Testing
+```python
+# Performance test example
+class TestPerformance(unittest.TestCase):
+    def test_api_response_time(self):
+        start_time = time.time()
+        response = self.client.get('/api/v1/health')
+        end_time = time.time()
+        self.assertLess(end_time - start_time, 0.1)  # 100ms
 
-**Tools Used**:
-- **Allure**: A framework for generating detailed test reports.
-- **Grafana**: For monitoring system performance and visualizing test metrics.
+    def test_model_inference_time(self):
+        model = PoseEstimationModel()
+        start_time = time.time()
+        result = model.detect_pose(test_image)
+        end_time = time.time()
+        self.assertLess(end_time - start_time, 0.05)  # 50ms
+```
 
-## Conclusion
-A well-structured testing strategy ensures that the Raasid system remains reliable, accurate, and scalable. By using a combination of unit tests, integration tests, performance tests, and end-to-end tests, we ensure that the system can handle the complexities of real-time football officiating. The integration of a CI/CD pipeline and continuous monitoring ensures that the system remains robust and that any issues are quickly identified and addressed.
+### Security Testing
+```python
+# Security test example
+class TestSecurity(unittest.TestCase):
+    def test_authentication(self):
+        response = self.client.get('/api/v1/health', headers={
+            'Authorization': 'Bearer invalid_key'
+        })
+        self.assertEqual(response.status_code, 401)
 
-## License
-This project is licensed under the MIT License – see the LICENSE file for details.
+    def test_rate_limiting(self):
+        for _ in range(101):
+            self.make_request()
+        response = self.make_request()
+        self.assertEqual(response.status_code, 429)
+```
 
-## Authors
-- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
-- [GitHub Profile](https://github.com/vseel5/raasid-project)
+## Test Environment
+
+### Environment Configuration
+```yaml
+# test_environment.yaml
+environments:
+  development:
+    api_url: http://localhost:8000
+    database: raasid_dev
+    models: local_models
+    
+  staging:
+    api_url: https://staging.raasid.com
+    database: raasid_staging
+    models: staging_models
+    
+  production:
+    api_url: https://api.raasid.com
+    database: raasid_prod
+    models: production_models
+```
+
+### Test Infrastructure
+```python
+# Test infrastructure
+class TestInfrastructure:
+    def setUp(self):
+        self.setup_database()
+        self.setup_models()
+        self.setup_api()
+
+    def setup_database(self):
+        self.db = Database()
+        self.db.create_test_tables()
+        self.db.load_test_data()
+
+    def setup_models(self):
+        self.models = ModelManager()
+        self.models.load_test_models()
+
+    def setup_api(self):
+        self.api = APIClient()
+        self.api.authenticate()
+```
+
+## Test Data Management
+
+### Test Data Generation
+```python
+# Test data generation
+class TestDataGenerator:
+    def generate_test_data(self) -> Dict:
+        return {
+            'videos': self.generate_videos(),
+            'annotations': self.generate_annotations(),
+            'metadata': self.generate_metadata()
+        }
+
+    def generate_videos(self) -> List[str]:
+        return [self.create_test_video() for _ in range(10)]
+
+    def generate_annotations(self) -> List[Dict]:
+        return [self.create_annotation() for _ in range(100)]
+```
+
+### Data Validation
+```python
+# Data validation
+class TestDataValidator:
+    def validate_test_data(self, data: Dict) -> bool:
+        return (
+            self.validate_videos(data['videos']) and
+            self.validate_annotations(data['annotations']) and
+            self.validate_metadata(data['metadata'])
+        )
+
+    def validate_videos(self, videos: List[str]) -> bool:
+        return all(self.is_valid_video(video) for video in videos)
+```
+
+## Test Automation
+
+### CI/CD Integration
+```yaml
+# GitHub Actions workflow
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Run tests
+        run: |
+          pytest --cov=api tests/
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
+```
+
+### Test Reporting
+```python
+# Test reporting
+class TestReporter:
+    def generate_report(self, results: Dict) -> str:
+        return f"""
+        Test Results
+        ------------
+        Total Tests: {results['total']}
+        Passed: {results['passed']}
+        Failed: {results['failed']}
+        Skipped: {results['skipped']}
+        Coverage: {results['coverage']}%
+        Duration: {results['duration']}s
+        """
+```
+
+## Quality Gates
+
+### Code Quality
+```yaml
+# Quality gates
+quality_gates:
+  code_coverage:
+    minimum: 90
+    target: 95
+    
+  test_success:
+    minimum: 95
+    target: 100
+    
+  performance:
+    api_latency: 100ms
+    model_inference: 50ms
+    
+  security:
+    vulnerabilities: 0
+    dependencies: up_to_date
+```
+
+### Release Criteria
+```python
+# Release criteria
+class ReleaseValidator:
+    def validate_release(self) -> bool:
+        return (
+            self.check_code_coverage() and
+            self.check_test_results() and
+            self.check_performance() and
+            self.check_security()
+        )
+
+    def check_code_coverage(self) -> bool:
+        coverage = self.get_code_coverage()
+        return coverage >= self.quality_gates['code_coverage']['minimum']
+```
+
+## Best Practices
+
+### Development
+1. Write tests first
+2. Keep tests independent
+3. Use meaningful names
+4. Follow DRY principle
+5. Document tests
+
+### Maintenance
+1. Regular updates
+2. Monitor coverage
+3. Review results
+4. Update data
+5. Document changes
+
+### CI/CD
+1. Automate testing
+2. Monitor builds
+3. Track metrics
+4. Review reports
+5. Maintain environment
+
+## Support
+For testing-related issues:
+- Email: testing@raasid.com
+- Documentation: https://raasid.com/docs/testing
+- GitHub Issues: https://github.com/vseel5/raasid-project/issues
+
+---
+
+*Last updated: April 17, 2024*
 
 

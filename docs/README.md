@@ -1,78 +1,197 @@
-# Raasid – AI-Powered Handball Detection System
+# RAASID (Referee Assistant AI System for Instant Decisions)
+
+## Version Information
+- **Current Version**: 1.0.0
+- **Last Updated**: April 17, 2024
+- **Status**: Active Development
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Key Features](#key-features)
+3. [System Architecture](#system-architecture)
+4. [Installation](#installation)
+5. [Quick Start](#quick-start)
+6. [Documentation](#documentation)
+7. [Contributing](#contributing)
+8. [License](#license)
+9. [Contact](#contact)
 
 ## Overview
-Raasid is an AI-driven handball detection system designed to improve the accuracy, speed, and transparency of football refereeing. By integrating pose estimation, sensor data, and real-time analysis, Raasid ensures consistent enforcement of FIFA handball rules, minimizing human error and decision delays. The MVP focuses on real-time handball detection using AI and sensor data, making it a scalable solution for the future of football officiating.
+RAASID is an advanced AI-powered system designed to assist referees in making accurate handball decisions during football matches. The system combines computer vision, machine learning, and real-time analysis to provide instant, objective decisions.
 
-## Problem Statement
-Despite advancements like VAR, handball decisions remain inconsistent and controversial due to:
-- Subjective human interpretation of handball incidents.
-- Delays in VAR decision-making, impacting real-time match flow.
-- Difficulty in distinguishing intent between accidental and intentional handball.
-- Lack of standardization across leagues, causing variations in the enforcement of FIFA rules.
+### Problem Statement
+Football referees face significant challenges in making accurate handball decisions due to:
+- High-speed gameplay
+- Complex player interactions
+- Subjective interpretation of rules
+- Limited viewing angles
 
-## Raasid's Solution
-Raasid solves the problem by providing an AI-powered system that analyzes key factors such as player pose, ball contact, and event context to make accurate handball decisions. The MVP implements real-time analysis of player actions, detecting ball-hand contact and differentiating between intentional and accidental handballs. The solution ensures real-time decision-making for referees, reducing delays and improving consistency.
+### Solution
+RAASID addresses these challenges through:
+- Real-time video analysis
+- AI-powered decision support
+- Objective rule interpretation
+- Instant feedback system
 
-## MVP Features
-- Pose Estimation AI: Detects hand positioning and limb angles to assess the likelihood of a handball.
-- Ball Contact Detection: Identifies ball-hand contact and measures impact force and contact duration.
-- Event Context Classification: Differentiates between intentional and accidental handball.
-- Real-time Decision Engine: Provides immediate decisions based on AI analysis.
-- Admin Dashboard: Allows for reviewing logs and managing decision overrides (limited functionality in MVP).
+## Key Features
 
-## Technology Stack
-- Backend: Python, FastAPI
-- Frontend: HTML, CSS, JavaScript (Streamlit for the dashboard)
-- AI: TensorFlow, MediaPipe, Scikit-learn
-- Logging & Storage: Local JSON files, logs, and cloud endpoint simulation
-- Containerization: Docker for easy deployment and environment isolation
+### 1. Real-time Analysis
+- Frame-by-frame video processing
+- Instant decision support
+- Low-latency response (<100ms)
 
-## Getting Started
-Follow these steps to get the project running locally:
+### 2. AI Components
+- Context Analysis Model
+- Pose Estimation Model
+- Ball Detection Model
 
-1. Clone the repository and set up the virtual environment:
+### 3. Decision Support
+- Rule-based analysis
+- Confidence scoring
+- Historical data reference
+
+### 4. User Interface
+- Intuitive dashboard
+- Real-time visualization
+- Decision playback
+
+## System Architecture
+
+### Core Components
+1. **Video Processing Pipeline**
+   - Frame extraction
+   - Feature detection
+   - Analysis integration
+
+2. **AI Models**
+   - Context Analysis (CNN)
+   - Pose Estimation (ResNet50)
+   - Ball Detection (YOLOv5)
+
+3. **Decision Engine**
+   - Rule interpretation
+   - Confidence scoring
+   - Result aggregation
+
+### Technical Stack
+- **Backend**: FastAPI, Python 3.8+
+- **AI Framework**: PyTorch 1.9+
+- **Computer Vision**: OpenCV 4.5+
+- **Frontend**: Streamlit
+- **Deployment**: Docker, Docker Compose
+
+## Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- CUDA-capable GPU (recommended)
+- Docker and Docker Compose
+- 16GB RAM minimum
+- 100GB storage space
+
+### Setup Instructions
+
+1. **Clone Repository**
    ```bash
    git clone https://github.com/vseel5/raasid-project
    cd raasid-project
+   ```
+
+2. **Create Virtual Environment**
+   ```bash
    python -m venv raasid-env
-   raasid-env\Scripts\activate  # On macOS/Linux: source raasid-env/bin/activate
+   # Windows
+   raasid-env\Scripts\activate
+   # macOS/Linux
+   source raasid-env/bin/activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. Run the FastAPI backend:
+4. **Build Docker Containers**
    ```bash
-   uvicorn api.main:app --reload
+   docker-compose up --build
    ```
 
-3. Open the frontend:
-   - Open `frontend/index.html` in your browser.
-   - For development, use VS Code with Live Server extension for automatic reloading.
+## Quick Start
 
-## API Endpoints
-Here are the available API endpoints for interacting with the system:
+1. **Start the System**
+   ```bash
+   # Start backend
+   uvicorn api.main:app --reload
+   
+   # Start frontend
+   streamlit run frontend/main.py
+   ```
 
-- `/pose_estimation`: Accepts pose estimation AI data (hand positioning and limb angles).
-- `/ball_contact_ai`: Accepts ball contact sensor data (impact force, contact duration).
-- `/event_context_ai`: Accepts context evaluation data (handball decision and rule violation).
-- `/decision_making_ai`: Accepts the final decision from AI, integrating pose, ball contact, and event context.
-- `/var_review`: Allows a manual VAR override of AI decisions (for referees).
-- `/output_distribution`: Simulates sending decisions to external systems (referee smartwatch, TV broadcast, cloud).
-- `/decision_logs`: Retrieves logs of all decisions made by the system.
+2. **Access the Interface**
+   - Frontend: http://localhost:8501
+   - API Documentation: http://localhost:8000/docs
 
-## Project Status
-The core MVP is functional:
-- Data flows correctly from input to output layers.
-- API logs decisions persistently.
-- The Admin Dashboard interfaces with the backend to manage and review decisions.
+3. **Basic Usage**
+   - Upload match video
+   - Configure analysis parameters
+   - Start real-time analysis
+   - Review decisions
 
-### Next Milestones:
-- Real-time timeline visualization of decisions and events.
-- Real-time explanation engine for handball decisions (for transparency).
-- Advanced analytics for match review and decision trends.
+## Documentation
+
+### Core Documentation
+- [System Architecture](docs/system-technical-architecture.md)
+- [AI Models](docs/ai-models.md)
+- [Training Pipeline](docs/ai-training-pipeline.md)
+- [API Reference](docs/api-reference.md)
+
+### Additional Guides
+- [Deployment Guide](docs/deployment-guide.md)
+- [Testing Strategy](docs/testing-strategy.md)
+- [Security Documentation](docs/security-documentation.md)
+- [Performance Tuning](docs/performance-tuning-and-optimization-guide.md)
+
+## Contributing
+
+### Development Process
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
+
+### Code Standards
+- Follow PEP 8 guidelines
+- Write comprehensive tests
+- Document all changes
+- Maintain backward compatibility
+
+### Testing Requirements
+- Unit test coverage > 80%
+- Integration tests for all features
+- Performance benchmarks
+- Security testing
 
 ## License
-This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Authors
-- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
-- [GitHub Profile](https://github.com/vseel5/raasid-project)
+## Contact
+
+### Core Team
+- **Project Lead**: Aseel K. Rajab
+- **Technical Lead**: Majd I. Rashid
+- **AI Specialist**: Ali S. Alharthi
+
+### Support
+- **Email**: support@raasid.com
+- **GitHub Issues**: [Issue Tracker](https://github.com/vseel5/raasid-project/issues)
+- **Documentation**: [Documentation Site](https://raasid.com/docs)
+
+### Social Media
+- [GitHub](https://github.com/vseel5/raasid-project)
+- [Twitter](https://twitter.com/raasid_ai)
+- [LinkedIn](https://linkedin.com/company/raasid)
+
+---
+
+*Last updated: April 17, 2024*

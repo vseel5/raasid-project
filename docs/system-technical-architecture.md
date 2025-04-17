@@ -1,113 +1,240 @@
 # System Technical Architecture
 
 ## Overview
-The technical architecture of Raasid outlines the detailed infrastructure and technical components that support the system’s functionality. It describes the interaction between various software and hardware layers, focusing on the integration of AI models, data processing pipelines, and external system communication. The architecture ensures that Raasid can efficiently handle real-time video analysis, sensor data processing, and decision distribution.
+The RAASID system is built on a modular architecture that enables real-time handball incident detection and analysis. This document details the technical components and their interactions.
 
-## Core Components
+## 1. Core Components
 
-### 1. AI Models
-The AI models are the heart of the Raasid system, responsible for detecting handball incidents and making decisions based on the data received. These models are:
-
-- **Pose Estimation Model**: Detects hand positioning and limb angles using computer vision techniques.
-- **Ball Contact Detection Model**: Analyzes sensor data to detect ball contact, focusing on impact force and contact duration.
-- **Event Context Classification Model**: Classifies the handball incident as intentional or accidental and checks for rule violations based on event context.
-
-These models are deployed as part of the backend and exposed as API endpoints for integration with the frontend.
-
-### 2. Data Flow
-The data flow in Raasid is structured in several stages:
-
-1. **Data Collection**: Data is collected in real-time, including video frames, sensor data from smart balls, and event context from match events.
-2. **Data Preprocessing**: The collected data is preprocessed for analysis. Video frames are converted into formats suitable for pose estimation, and sensor data is processed for ball contact analysis.
-3. **AI Inference**: The preprocessed data is passed to the AI models for pose estimation, ball contact detection, and event context classification.
-4. **Decision Making**: The results from the AI models are combined to make a final decision on whether a handball occurred, and if so, whether it was intentional or accidental.
-5. **Data Distribution**: The final decision is distributed to external systems, such as the referee smartwatch, TV broadcast, and cloud storage for long-term retention.
-
-### 3. Backend Architecture
-The backend of the Raasid system is responsible for managing API requests, handling AI inference, and storing decision logs. It is built using **FastAPI**, a modern, fast web framework for Python.
-
-- **API Endpoints**: The backend exposes multiple endpoints for interacting with the system. These endpoints include `/pose_estimation`, `/ball_contact_ai`, `/event_context_ai`, `/decision_making_ai`, and `/output_distribution`.
-- **AI Inference Engine**: The backend serves as the host for the AI models, executing inference on incoming data from the frontend and other sources.
-- **Data Management**: All data (e.g., decisions, logs, sensor data) is stored locally or in the cloud. Logs of decisions are retained for audit purposes and further analysis.
-
-### 4. Frontend Architecture
-The frontend provides the user interface where referees and analysts can interact with the system. It is built using **Streamlit**, a lightweight framework for building data-driven web applications. The frontend performs the following tasks:
-
-- **Video Upload**: The referee or analyst uploads the match video or image for processing.
-- **Real-Time Decision Display**: The frontend displays the real-time analysis from the backend, including handball detection and event classification.
-- **History and Reports**: It provides access to the history of decisions and downloadable reports of match events.
-
-The frontend communicates with the backend through RESTful API calls, using FastAPI endpoints exposed by the backend.
-
-### 5. Integration with External Systems
-Raasid integrates with several external systems to distribute decisions in real-time:
-
-- **Referee Smartwatch**: Displays the final decision to the referee for immediate action.
-- **TV Broadcast**: Sends the final decision to the TV broadcast system for displaying to the audience.
-- **Cloud Storage**: Stores the final decisions and metadata for long-term access and analysis.
-
-These integrations are simulated via API calls to external endpoints, enabling seamless data distribution across systems.
-
-## Data Flow Diagram
-
-Below is a diagram illustrating the technical data flow of the Raasid system:
-
-```plaintext
-+------------------+        +-------------------------+        +----------------------+
-|                  |        |                         |        |                      |
-|  Video Input     +------->+   Frontend (Streamlit)  +------->+   Backend (FastAPI)  |
-|                  |        |                         |        |                      |
-+------------------+        |   - Video Upload        |        |   - API Endpoints     |
-                            |   - AI Analysis Display |        |   - Model Inference   |
-                            |   - History and Reports |        |   - Data Management   |
-                            +-------------------------+        +----------------------+
-                                      |
-                                      |
-                            +----------------------+
-                            |                      |
-                            |   AI Inference Engine|
-                            |   - Pose Estimation  |
-                            |   - Ball Contact     |
-                            |   - Event Context    |
-                            +----------------------+
-                                      |
-                                      |
-                           +--------------------------+
-                           |                          |
-                           |   External Integrations  |
-                           |   - Referee Smartwatch   |
-                           |   - TV Broadcast         |
-                           |   - Cloud Storage        |
-                           +--------------------------+
+### 1.1 Video Processing Pipeline
+```python
+class VideoProcessor:
+    def __init__(self):
+        self.frame_queue = Queue()
+        self.processed_queue = Queue()
+        
+    def process_frame(self, frame: np.ndarray) -> Dict:
+        # Frame preprocessing
+        # Model inference
+        # Result aggregation
+        pass
 ```
 
-## Deployment
-Raasid is deployed in a containerized environment using Docker. The backend and frontend are packaged as Docker containers to ensure portability and consistency across environments. The deployment steps are as follows:
+### 1.2 AI Models
+- Context Analysis Model (CNN)
+- Pose Estimation Model (ResNet50)
+- Ball Detection Model (YOLOv5)
 
-1. **Docker Setup**: Build the Docker images for both the frontend and backend:
-   ```bash
-   docker-compose up --build
-   ```
+### 1.3 Training Pipeline
+```python
+class TrainingPipeline:
+    def __init__(self):
+        self.data_collector = TrainingDataCollector()
+        self.model_trainer = ModelTrainer()
+        
+    def run(self):
+        # Data collection
+        # Model training
+        # Evaluation
+        pass
+```
 
-2. **Container Orchestration**: Use Docker Compose to manage and orchestrate the containers, ensuring they communicate seamlessly.
+## 2. System Architecture
 
-3. **Model Deployment**: The AI models are loaded into the backend containers, ensuring that real-time inference can be performed as video and sensor data are received.
+### 2.1 Component Diagram
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│  Video Input    │────▶│  Frame Queue    │────▶│  Video Processor│
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └────────┬────────┘
+                                                         │
+                                                         ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│  Training Data  │────▶│  Data Collector │────▶│  Model Trainer  │
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └────────┬────────┘
+                                                         │
+                                                         ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│  Model Storage  │◀────│  Model Saver    │◀────│  Model Evaluator│
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
 
-4. **Scaling**: The system is designed to scale horizontally, allowing multiple backend instances to be deployed to handle a larger volume of incoming requests.
+### 2.2 Data Flow
+1. Video Input
+   - Frame extraction
+   - Queue management
+   - Batch processing
 
-## Scalability Considerations
-The Raasid system is designed to scale horizontally, accommodating multiple matches or events concurrently. Key scalability features include:
+2. Model Inference
+   - Parallel processing
+   - Result aggregation
+   - Confidence scoring
 
-- **Load Balancing**: The backend can be scaled to multiple instances using a load balancer to distribute traffic efficiently.
-- **Cloud Storage**: Cloud storage is utilized for long-term data storage, allowing for the scalability of data retention.
-- **Distributed AI Inference**: As the system grows, the AI models can be distributed across multiple servers or GPUs to handle increased inference demand.
+3. Training Pipeline
+   - Data collection
+   - Model training
+   - Evaluation
 
-## Security Considerations
-Security is a top priority for the Raasid system. The following measures are implemented to protect the system:
+## 3. Technical Specifications
 
-- **Encryption**: All data in transit is encrypted using HTTPS and TLS. Sensitive data, including decision logs, is stored securely with encryption.
-- **Authentication**: Future iterations of the system may include authentication mechanisms, such as JWT or OAuth, to secure the APIs.
-- **Data Access Control**: Role-based access control (RBAC) is implemented to ensure that only authorized personnel can access sensitive data.
+### 3.1 Hardware Requirements
+- CPU: 4+ cores
+- RAM: 16GB minimum
+- GPU: CUDA-capable (recommended)
+- Storage: 100GB+ SSD
+
+### 3.2 Software Requirements
+- Python 3.8+
+- PyTorch 1.9+
+- OpenCV 4.5+
+- FastAPI
+- CUDA Toolkit
+
+### 3.3 Performance Metrics
+- Frame Processing: <100ms
+- Model Inference: <50ms
+- Training Time: <24 hours
+- Memory Usage: <8GB
+
+## 4. Implementation Details
+
+### 4.1 Video Processing
+```python
+class VideoProcessor:
+    def __init__(self):
+        self.models = {
+            'context': ContextCNN(),
+            'pose': PoseEstimator(),
+            'ball': BallDetector()
+        }
+        
+    def process_frame(self, frame: np.ndarray) -> Dict:
+        results = {}
+        for name, model in self.models.items():
+            results[name] = model.infer(frame)
+        return results
+```
+
+### 4.2 Training Pipeline
+```python
+class TrainingPipeline:
+    def __init__(self):
+        self.data_collector = TrainingDataCollector()
+        self.model_trainer = ModelTrainer()
+        
+    def run(self):
+        # Collect training data
+        data = self.data_collector.collect()
+        
+        # Train model
+        model = self.model_trainer.train(data)
+        
+        # Evaluate model
+        metrics = self.model_trainer.evaluate(model)
+        
+        return model, metrics
+```
+
+### 4.3 Model Management
+```python
+class ModelManager:
+    def __init__(self):
+        self.models = {}
+        self.config = load_config()
+        
+    def load_model(self, name: str) -> nn.Module:
+        model = self.models.get(name)
+        if not model:
+            model = self._load_from_disk(name)
+            self.models[name] = model
+        return model
+```
+
+## 5. Security Considerations
+
+### 5.1 Data Security
+- Encrypted storage
+- Secure transfer
+- Access control
+
+### 5.2 Model Security
+- Model encryption
+- Version control
+- Access logging
+
+### 5.3 API Security
+- Authentication
+- Rate limiting
+- Input validation
+
+## 6. Monitoring and Logging
+
+### 6.1 Performance Monitoring
+- Frame processing time
+- Model inference time
+- Memory usage
+- GPU utilization
+
+### 6.2 Error Logging
+- Exception handling
+- Error tracking
+- Debug information
+
+### 6.3 System Health
+- Resource monitoring
+- Service status
+- Alert system
+
+## 7. Deployment
+
+### 7.1 Containerization
+```dockerfile
+FROM python:3.8-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "main.py"]
+```
+
+### 7.2 Orchestration
+```yaml
+services:
+  api:
+    image: raasid-api
+    ports:
+      - "8000:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - ./models:/app/models
+```
+
+### 7.3 Scaling
+- Horizontal scaling
+- Load balancing
+- Resource allocation
+
+## 8. Maintenance
+
+### 8.1 Updates
+- Model updates
+- System updates
+- Security patches
+
+### 8.2 Backup
+- Data backup
+- Model backup
+- Configuration backup
+
+### 8.3 Monitoring
+- Performance monitoring
+- Error monitoring
+- Resource monitoring
 
 ## Future Enhancements
 The technical architecture will continue to evolve to support new features and improve performance. Potential future enhancements include:

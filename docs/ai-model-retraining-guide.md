@@ -1,117 +1,293 @@
 # AI Model Retraining Guide
 
-## Overview
-This guide provides instructions for retraining the AI models used in the Raasid system. AI models need periodic retraining with fresh data to ensure they maintain high accuracy and adapt to changing patterns in gameplay. This document explains the process of retraining the pose estimation, ball contact detection, and event context classification models, as well as best practices for model evaluation and deployment.
+## Version Information
+- **Document Version**: 1.0.0
+- **Last Updated**: April 17, 2024
+- **Compatible System Version**: 1.0.0
 
-## Prerequisites
-Before starting the retraining process, ensure the following prerequisites are met:
+## Table of Contents
+1. [Retraining Strategy](#retraining-strategy)
+2. [Data Collection](#data-collection)
+3. [Model Evaluation](#model-evaluation)
+4. [Retraining Process](#retraining-process)
+5. [Model Deployment](#model-deployment)
+6. [Monitoring](#monitoring)
+7. [Version Control](#version-control)
+8. [Best Practices](#best-practices)
 
-- **Python 3.8+**: Required for running the training scripts.
-- **TensorFlow/Keras**: Deep learning frameworks used for training AI models.
-- **Scikit-learn**: Used for machine learning algorithms.
-- **Data Pipeline**: A consistent and reliable data pipeline that includes labeled training data.
-- **GPU (Optional)**: For faster model training, especially for deep learning models.
-- **Docker**: If using a containerized environment for model training and deployment.
+## Retraining Strategy
 
-## Retraining Workflow
+### Retraining Triggers
+| Trigger | Description | Action |
+|---------|-------------|--------|
+| Performance Drop | Accuracy < 90% | Immediate retraining |
+| Data Drift | Distribution shift > 10% | Scheduled retraining |
+| New Scenarios | New handball situations | Incremental training |
+| Rule Changes | FIFA rule updates | Full retraining |
 
-### Step 1: Data Collection
-The performance of AI models relies on high-quality labeled data. The following data sources should be used for retraining:
-
-- **Pose Estimation Data**: Labeled video frames with hand positions and limb angles. This data is essential for improving the pose estimation model's accuracy.
-- **Ball Contact Data**: Sensor data from smart balls, including impact force, contact duration, and sensor source. This data is used to improve the ball contact detection model.
-- **Event Context Data**: Labeled handball events, including classifications of intentional or accidental handball and rule violations. This data helps train the event context classification model.
-
-Make sure the data is cleaned, normalized, and split into training, validation, and test datasets.
-
-### Step 2: Data Preprocessing
-Data preprocessing is crucial for training deep learning models. The following preprocessing steps are recommended:
-
-- **Normalization**: Scale the numerical values (e.g., limb angles, impact force) to ensure uniformity.
-- **Augmentation**: Apply data augmentation techniques (e.g., rotation, flipping, color jittering) to increase the diversity of the training data.
-- **Resizing**: Ensure that video frames are resized to a uniform size (e.g., 224x224 for image-based models).
-- **Tokenization (for event context data)**: If event context data is text-based (e.g., "intentional", "accidental"), tokenize the text for input to the model.
-
-### Step 3: Retraining the Models
-The retraining process for each model is as follows:
-
-#### 1. Pose Estimation Model
-- **Model Type**: Convolutional Neural Network (CNN), specifically designed for keypoint detection.
-- **Training**:
-  - Use labeled video frames with known hand positions and limb angles.
-  - Train the model to predict keypoints (hand position, elbow angle, shoulder angle).
-  - Use techniques such as transfer learning to fine-tune pre-trained models (e.g., MediaPipe or OpenPose) on your specific dataset.
-
-```bash
-# Example command to start retraining the Pose Estimation Model
-python retrain_pose_estimation.py --data-path /path/to/pose_data --epochs 50
+### Retraining Schedule
+```yaml
+# retraining_schedule.yaml
+models:
+  context_model:
+    schedule: weekly
+    trigger_threshold: 0.90
+    evaluation_metrics:
+      - accuracy
+      - precision
+      - recall
+  pose_model:
+    schedule: biweekly
+    trigger_threshold: 0.95
+    evaluation_metrics:
+      - mAP
+      - inference_time
+  ball_model:
+    schedule: monthly
+    trigger_threshold: 0.85
+    evaluation_metrics:
+      - detection_rate
+      - false_positives
 ```
 
-#### 2. Ball Contact Detection Model
-- **Model Type**: Classification model using sensor data (e.g., Random Forest, SVM).
-- **Training**:
-  - Train the model to predict ball contact based on impact force, contact duration, and sensor data.
-  - Use cross-validation to ensure the model is generalized to unseen data.
+## Data Collection
 
-```bash
-# Example command to retrain the Ball Contact Detection Model
-python retrain_ball_contact.py --data-path /path/to/sensor_data --epochs 50
+### Data Pipeline
+```python
+# Data collection pipeline
+class DataCollector:
+    def collect_training_data(self) -> None:
+        # Collect new data
+        new_data = self.fetch_new_data()
+        
+        # Preprocess data
+        processed_data = self.preprocess_data(new_data)
+        
+        # Validate data
+        if self.validate_data(processed_data):
+            self.store_data(processed_data)
+            
+    def preprocess_data(self, data: Dict) -> Dict:
+        return {
+            'frames': self.extract_frames(data['video']),
+            'annotations': self.generate_annotations(data),
+            'metadata': self.extract_metadata(data)
+        }
 ```
 
-#### 3. Event Context Classification Model
-- **Model Type**: Decision trees, ensemble methods, or neural networks.
-- **Training**:
-  - Train the model to classify events as intentional or accidental based on the pose and ball contact data.
-  - Use rule-based logic in conjunction with machine learning to improve accuracy.
-
-```bash
-# Example command to retrain the Event Context Classification Model
-python retrain_event_context.py --data-path /path/to/event_data --epochs 50
+### Data Validation
+```python
+# Data validation
+class DataValidator:
+    def validate_data(self, data: Dict) -> bool:
+        return (
+            self.check_data_quality(data) and
+            self.verify_annotations(data) and
+            self.validate_distribution(data)
+        )
+    
+    def check_data_quality(self, data: Dict) -> bool:
+        return (
+            data['frames'].shape[0] > 0 and
+            data['annotations'].shape[0] > 0 and
+            not np.isnan(data['frames']).any()
+        )
 ```
 
-### Step 4: Model Evaluation
-After retraining the models, it is essential to evaluate their performance using the validation set. Use the following metrics to assess the models:
+## Model Evaluation
 
-- **Accuracy**: The percentage of correct predictions.
-- **Precision**: The proportion of true positives among all positive predictions.
-- **Recall**: The proportion of true positives among all actual positive instances.
-- **F1 Score**: The harmonic mean of precision and recall.
-
-Example evaluation script:
-
-```bash
-python evaluate_model.py --model /path/to/model --data-path /path/to/validation_data
+### Performance Metrics
+```python
+# Model evaluation
+class ModelEvaluator:
+    def evaluate_model(self, model: torch.nn.Module, data: Dict) -> Dict:
+        return {
+            'accuracy': self.calculate_accuracy(model, data),
+            'precision': self.calculate_precision(model, data),
+            'recall': self.calculate_recall(model, data),
+            'f1_score': self.calculate_f1_score(model, data)
+        }
+    
+    def calculate_accuracy(self, model: torch.nn.Module, data: Dict) -> float:
+        predictions = model(data['test_data'])
+        return accuracy_score(data['test_labels'], predictions)
 ```
 
-### Step 5: Hyperparameter Tuning
-For improved model performance, tune hyperparameters such as the learning rate, batch size, and the number of layers. Use techniques like **Grid Search** or **Random Search** to find the optimal hyperparameters.
-
-### Step 6: Model Deployment
-Once the model is retrained and evaluated, deploy the new model to the backend system. Follow these steps:
-
-1. **Export the Model**: Save the trained model using a format like `.h5` for TensorFlow/Keras models.
-2. **Update the Backend**: Replace the old model with the newly trained model in the backend system.
-3. **Test Deployment**: Run tests to verify that the new model works as expected in real-time, using sample video and sensor data.
-4. **Monitor Model Performance**: Continuously monitor the model’s performance after deployment, tracking metrics like inference time and accuracy.
-
-```bash
-# Example command to export the trained model
-python export_model.py --model /path/to/trained_model --output /path/to/save/model.h5
+### Drift Detection
+```python
+# Drift detection
+class DriftDetector:
+    def detect_drift(self, current_data: Dict, historical_data: Dict) -> float:
+        return self.calculate_distribution_shift(
+            current_data['distribution'],
+            historical_data['distribution']
+        )
+    
+    def calculate_distribution_shift(self, dist1: np.ndarray, dist2: np.ndarray) -> float:
+        return wasserstein_distance(dist1, dist2)
 ```
 
-### Step 7: Continuous Model Improvement
-Regularly retrain the model using new match data to ensure that the system adapts to evolving game patterns and improves accuracy. Set up a schedule for periodic retraining (e.g., monthly or quarterly) and use feedback from referees and analysts to guide improvements.
+## Retraining Process
+
+### Training Pipeline
+```python
+# Training pipeline
+class ModelTrainer:
+    def retrain_model(self, model: torch.nn.Module, data: Dict) -> torch.nn.Module:
+        # Prepare data
+        train_loader = self.create_data_loader(data['train'])
+        val_loader = self.create_data_loader(data['val'])
+        
+        # Train model
+        optimizer = self.create_optimizer(model)
+        scheduler = self.create_scheduler(optimizer)
+        
+        for epoch in range(self.epochs):
+            self.train_epoch(model, train_loader, optimizer)
+            metrics = self.validate_epoch(model, val_loader)
+            scheduler.step(metrics['val_loss'])
+            
+        return model
+```
+
+### Hyperparameter Tuning
+```python
+# Hyperparameter tuning
+class HyperparameterOptimizer:
+    def optimize_hyperparameters(self, model: torch.nn.Module, data: Dict) -> Dict:
+        param_grid = {
+            'learning_rate': [1e-3, 1e-4, 1e-5],
+            'batch_size': [16, 32, 64],
+            'optimizer': ['adam', 'sgd']
+        }
+        
+        best_params = self.grid_search(model, data, param_grid)
+        return best_params
+```
+
+## Model Deployment
+
+### Version Control
+```python
+# Model versioning
+class ModelVersioner:
+    def create_version(self, model: torch.nn.Module, metadata: Dict) -> str:
+        version = self.generate_version_number()
+        self.save_model(model, version)
+        self.save_metadata(metadata, version)
+        return version
+    
+    def generate_version_number(self) -> str:
+        return f"v{datetime.now().strftime('%Y%m%d')}.{self.get_build_number()}"
+```
+
+### Deployment Pipeline
+```python
+# Deployment pipeline
+class ModelDeployer:
+    def deploy_model(self, model: torch.nn.Module, version: str) -> None:
+        # Validate model
+        if not self.validate_model(model):
+            raise ValueError("Model validation failed")
+            
+        # Package model
+        model_package = self.package_model(model, version)
+        
+        # Deploy to production
+        self.deploy_to_production(model_package)
+        
+        # Update routing
+        self.update_model_routing(version)
+```
+
+## Monitoring
+
+### Performance Monitoring
+```python
+# Performance monitoring
+class PerformanceMonitor:
+    def monitor_model(self, model: torch.nn.Module) -> Dict:
+        return {
+            'inference_time': self.measure_inference_time(model),
+            'memory_usage': self.measure_memory_usage(model),
+            'accuracy': self.measure_accuracy(model),
+            'throughput': self.measure_throughput(model)
+        }
+```
+
+### Alert System
+```python
+# Alert system
+class ModelAlertSystem:
+    def check_alerts(self, metrics: Dict) -> List[str]:
+        alerts = []
+        if metrics['accuracy'] < self.thresholds['accuracy']:
+            alerts.append('Accuracy below threshold')
+        if metrics['inference_time'] > self.thresholds['inference_time']:
+            alerts.append('Inference time above threshold')
+        return alerts
+```
+
+## Version Control
+
+### Model Registry
+```python
+# Model registry
+class ModelRegistry:
+    def register_model(self, model: torch.nn.Module, metadata: Dict) -> None:
+        version = self.generate_version()
+        self.store_model(model, version)
+        self.store_metadata(metadata, version)
+        self.update_registry(version)
+    
+    def get_model(self, version: str) -> Tuple[torch.nn.Module, Dict]:
+        model = self.load_model(version)
+        metadata = self.load_metadata(version)
+        return model, metadata
+```
+
+### Change Log
+```python
+# Change log
+class ChangeLogger:
+    def log_changes(self, version: str, changes: Dict) -> None:
+        self.store_changes({
+            'version': version,
+            'timestamp': datetime.now(),
+            'changes': changes,
+            'author': self.get_current_user()
+        })
+```
 
 ## Best Practices
 
-- **Data Quality**: Ensure that training data is labeled accurately and covers a wide variety of scenarios.
-- **Model Monitoring**: Continuously monitor the model’s performance to identify when retraining is necessary.
-- **Version Control**: Keep track of model versions, including training data, hyperparameters, and performance metrics.
-- **Scalability**: Consider training models on distributed systems (e.g., AWS Sagemaker, Google AI Platform) for scalability when processing large datasets.
+### Development
+1. Maintain data quality
+2. Regular model evaluation
+3. Version control
+4. Documentation
+5. Testing
 
-## License
-This project is licensed under the MIT License – see the LICENSE file for details.
+### Deployment
+1. Gradual rollout
+2. Monitoring
+3. Rollback plan
+4. Performance tracking
+5. User feedback
 
-## Authors
-- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
-- [GitHub Profile](https://github.com/vseel5/raasid-project)
+### Maintenance
+1. Regular updates
+2. Performance monitoring
+3. Data collection
+4. Model evaluation
+5. Documentation updates
+
+## Support
+For retraining-related issues:
+- Email: retraining@raasid.com
+- Documentation: https://raasid.com/docs/retraining
+- GitHub Issues: https://github.com/vseel5/raasid-project/issues
+
+---
+
+*Last updated: April 17, 2024*

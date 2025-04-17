@@ -1,102 +1,377 @@
 # Deployment Guide
 
-## Overview
-This guide provides instructions for deploying the Raasid AI-powered handball detection system in both local and production environments. It covers the setup of the backend, frontend, required dependencies, and configuration for cloud storage, APIs, and external system integrations.
+## Version Information
+- **Document Version**: 1.0.0
+- **Last Updated**: April 17, 2024
+- **Compatible System Version**: 1.0.0
+
+## Table of Contents
+1. [Prerequisites](#prerequisites)
+2. [Deployment Options](#deployment-options)
+3. [Configuration](#configuration)
+4. [Monitoring](#monitoring)
+5. [Scaling](#scaling)
+6. [Backup and Recovery](#backup-and-recovery)
+7. [Security](#security)
+8. [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
-Before deploying the system, ensure the following prerequisites are met:
 
-- **Docker**: Used for containerizing the system for easy deployment across various environments.
-- **Python 3.8+**: Required for running the backend FastAPI server.
-- **Git**: To clone the repository and manage version control.
-- **Docker Compose**: For managing multi-container Docker applications.
-- **Cloud Storage Account**: For storing decision logs and reports (AWS S3, Azure Blob Storage, etc.).
+### Hardware Requirements
+- CPU: 4+ cores (8+ recommended)
+- RAM: 16GB minimum (32GB recommended)
+- GPU: CUDA-capable (NVIDIA GPU with 8GB+ VRAM)
+- Storage: 100GB+ SSD
+- Network: 1Gbps connection
 
-## Setting Up the Development Environment
+### Software Requirements
+- Operating System: Ubuntu 20.04 LTS or later
+- Docker: 20.10.0 or later
+- Docker Compose: 2.0.0 or later
+- NVIDIA Container Toolkit
+- Python 3.8 or later
+- CUDA Toolkit 11.0 or later
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/vseel5/raasid-project
-   cd raasid-project
-   ```
+### Environment Setup
+```bash
+# Update system packages
+sudo apt update && sudo apt upgrade -y
 
-2. **Create a virtual environment**:
-   ```bash
-   python -m venv raasid-env
-   raasid-env\Scripts\activate  # For macOS/Linux: source raasid-env/bin/activate
-   ```
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
 
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/2.0.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
-4. **Run the FastAPI backend**:
-   ```bash
-   uvicorn api.main:app --reload
-   ```
+# Install NVIDIA Container Toolkit
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+sudo systemctl restart docker
+```
 
-5. **Start the Streamlit frontend**:
-   Navigate to the frontend directory and run:
-   ```bash
-   streamlit run streamlit_app.py
-   ```
+## Deployment Options
 
-## Setting Up the Dockerized Environment
+### 1. Docker Deployment (Recommended)
 
-For easy deployment, we provide Docker configurations for both the backend and frontend.
+#### Configuration
+```yaml
+# docker-compose.yml
+version: '3.8'
 
-1. **Build the Docker images**:
-   First, ensure that Docker is installed and running. Then, build the images for both the frontend and backend using Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
+services:
+  api:
+    image: raasid-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - MODEL_PATH=/app/models
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+```
 
-2. **Accessing the system**:
-   Once the Docker containers are up and running, the system can be accessed through the following:
-   - Backend API: `http://localhost:8000`
-   - Frontend (Streamlit): `http://localhost:8501`
+#### Deployment Steps
+```bash
+# Build and start containers
+docker-compose up --build -d
 
-## Deploying to Production (Cloud)
+# Verify deployment
+docker-compose ps
+docker-compose logs -f
+```
 
-1. **Cloud Setup**: For production deployment, set up cloud storage and other necessary services (e.g., AWS, Google Cloud). Ensure that storage buckets are created for decision logs, reports, and historical data.
+### 2. Kubernetes Deployment
 
-2. **Environment Configuration**:
-   - Set the necessary environment variables for the backend to connect to cloud storage and other services.
-   - Use a production-grade database (e.g., PostgreSQL, MySQL) for persistent data storage.
+#### Configuration
+```yaml
+# raasid-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: raasid-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: raasid-api
+  template:
+    metadata:
+      labels:
+        app: raasid-api
+    spec:
+      containers:
+      - name: raasid-api
+        image: raasid-api:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        env:
+        - name: MODEL_PATH
+          value: "/app/models"
+        volumeMounts:
+        - name: models
+          mountPath: "/app/models"
+      volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: raasid-models-pvc
+```
 
-3. **Deploying Using Docker**:
-   Use Docker to deploy the system on cloud services like AWS ECS, Azure App Service, or Google Cloud Run.
+#### Deployment Steps
+```bash
+# Apply configuration
+kubectl apply -f raasid-deployment.yaml
 
-   - Ensure Docker is installed on the cloud instance.
-   - Push your Docker images to a container registry (e.g., Docker Hub, AWS ECR).
-   - Use a container orchestration tool like Kubernetes if necessary for scaling the system.
+# Verify deployment
+kubectl get pods
+kubectl get services
+```
 
-4. **CI/CD Integration**:
-   - Set up a CI/CD pipeline (e.g., GitHub Actions, Jenkins) for automated testing and deployment of new updates.
-   - Configure webhooks to automatically trigger deployments when new code is pushed to the repository.
+## Configuration
+
+### Environment Variables
+```bash
+# Required
+MODEL_PATH=/app/models
+CUDA_VISIBLE_DEVICES=0
+LOG_LEVEL=INFO
+
+# Optional
+BATCH_SIZE=32
+CONFIDENCE_THRESHOLD=0.7
+MAX_FRAMES=1000
+SKIP_FRAMES=30
+```
+
+### Model Configuration
+```json
+{
+    "context_model": {
+        "path": "models/context_cnn.pth",
+        "input_size": [64, 64],
+        "batch_size": 32
+    },
+    "pose_model": {
+        "path": "models/pose_estimator.pth",
+        "input_size": [256, 256],
+        "batch_size": 16
+    },
+    "ball_model": {
+        "path": "models/ball_detector.pth",
+        "input_size": [128, 128],
+        "batch_size": 32
+    }
+}
+```
+
+## Monitoring
+
+### System Metrics
+```bash
+# Install monitoring tools
+sudo apt install prometheus node-exporter
+
+# Configure Prometheus
+cat <<EOF > prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'raasid'
+    static_configs:
+      - targets: ['localhost:8000']
+EOF
+```
+
+### Logging Configuration
+```python
+# logging.conf
+[loggers]
+keys=root,raasid
+
+[handlers]
+keys=consoleHandler,fileHandler
+
+[formatters]
+keys=simpleFormatter
+
+[logger_root]
+level=INFO
+handlers=consoleHandler
+
+[logger_raasid]
+level=INFO
+handlers=fileHandler
+qualname=raasid
+propagate=0
+
+[handler_consoleHandler]
+class=StreamHandler
+level=INFO
+formatter=simpleFormatter
+args=(sys.stdout,)
+
+[handler_fileHandler]
+class=FileHandler
+level=INFO
+formatter=simpleFormatter
+args=('logs/raasid.log', 'a')
+
+[formatter_simpleFormatter]
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+```
+
+## Scaling
+
+### Horizontal Scaling
+```bash
+# Scale API service
+docker-compose up --scale api=3 -d
+
+# Or with Kubernetes
+kubectl scale deployment raasid-api --replicas=3
+```
+
+### Load Balancing
+```nginx
+# nginx.conf
+upstream raasid_api {
+    server api1:8000;
+    server api2:8000;
+    server api3:8000;
+}
+
+server {
+    listen 80;
+    server_name api.raasid.com;
+
+    location / {
+        proxy_pass http://raasid_api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## Backup and Recovery
+
+### Data Backup
+```bash
+# Backup models
+tar -czf models_backup.tar.gz models/
+
+# Backup logs
+tar -czf logs_backup.tar.gz logs/
+
+# Schedule backups
+0 0 * * * /usr/bin/tar -czf /backup/models_$(date +\%Y\%m\%d).tar.gz /app/models
+```
+
+### Recovery Procedure
+```bash
+# Stop services
+docker-compose down
+
+# Restore backup
+tar -xzf models_backup.tar.gz -C /app/
+tar -xzf logs_backup.tar.gz -C /app/
+
+# Restart services
+docker-compose up -d
+```
+
+## Security
+
+### SSL Configuration
+```nginx
+# nginx-ssl.conf
+server {
+    listen 443 ssl;
+    server_name api.raasid.com;
+
+    ssl_certificate /etc/letsencrypt/live/api.raasid.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.raasid.com/privkey.pem;
+
+    location / {
+        proxy_pass http://raasid_api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+### Firewall Configuration
+```bash
+# Configure UFW
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 8000/tcp
+sudo ufw enable
+```
 
 ## Troubleshooting
 
-1. **Backend Not Starting**:
-   - Ensure that all environment variables are correctly set (e.g., cloud storage credentials).
-   - Check the logs for any errors related to missing dependencies or incorrect configurations.
+### Common Issues
 
-2. **Frontend Issues**:
-   - Ensure the frontend dependencies are installed.
-   - Check for CORS issues if the frontend cannot communicate with the backend.
+1. **GPU Not Detected**
+   ```bash
+   # Check NVIDIA drivers
+   nvidia-smi
+   
+   # Verify Docker GPU access
+   docker run --gpus all nvidia/cuda:11.0-base nvidia-smi
+   ```
 
-3. **Deployment Failures**:
-   - Verify that the Docker container is running correctly by checking the status of the containers:
-     ```bash
-     docker ps
-     ```
-   - Ensure cloud services (e.g., database, storage) are correctly configured and accessible.
+2. **High Memory Usage**
+   ```bash
+   # Monitor memory usage
+   docker stats
+   
+   # Adjust batch size
+   export BATCH_SIZE=16
+   ```
 
-## License
-This project is licensed under the MIT License – see the LICENSE file for details.
+3. **API Not Responding**
+   ```bash
+   # Check logs
+   docker-compose logs api
+   
+   # Verify health endpoint
+   curl http://localhost:8000/health
+   ```
 
-## Authors
-- Aseel K. Rajab, Majd I. Rashid, Ali S. Alharthi
-- [GitHub Profile](https://github.com/vseel5/raasid-project)
+### Support
+For deployment support:
+- Email: deployment-support@raasid.com
+- Documentation: https://raasid.com/docs/deployment
+- GitHub Issues: https://github.com/vseel5/raasid-project/issues
+
+---
+
+*Last updated: April 17, 2024*
 

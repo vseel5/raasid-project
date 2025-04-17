@@ -1,12 +1,62 @@
-version: '3'
+version: '3.8'
 
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile.backend
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  api:
+    build: .
     ports:
       - "8000:8000"
+    volumes:
+      - ./logs:/app/logs
+      - ./api:/app/api
+    environment:
+      - DEBUG=False
+      - API_VERSION=1.0.0
+      - API_PREFIX=/api/v1
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8000
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=%(asctime)s - %(levelname)s - %(message)s
+      - LOG_DIR=logs
+      - MAX_WORKERS=4
+      - CHUNK_SIZE=1024
+      - ENABLE_METRICS=True
+      - METRICS_SAVE_INTERVAL=100
+      - METRICS_FILE=processing_metrics.json
+      - VAR_REVIEW_THRESHOLD=95.0
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   frontend:
     build:
@@ -15,7 +65,18 @@ services:
     ports:
       - "8501:8501"
     depends_on:
-      - backend
+      - api
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+volumes:
+  redis_data:
 
 
 

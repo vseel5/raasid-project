@@ -1,57 +1,206 @@
-# AI Models
+# AI Models Documentation
 
 ## Overview
-The AI models in the Raasid system are designed to analyze and detect handball incidents in football matches. These models process various data inputs, such as player pose, ball contact, and event context, to generate accurate decisions. The MVP version of the system utilizes pre-trained models to provide real-time handball detection and classification, offering a foundational AI-driven solution for football officiating.
+The RAASID system utilizes several AI models to analyze handball incidents. This document provides detailed information about each model, its architecture, and implementation.
 
-## Model Architecture
-The AI models in Raasid are built on a combination of machine learning techniques, leveraging computer vision and sensor fusion. The models integrate information from pose estimation, ball contact detection, and event context classification to make decisions in real time.
+## 1. Context Analysis Model
+
+### Architecture
+The Context Analysis Model is implemented as a Convolutional Neural Network (CNN) with the following structure:
+
+```python
+class ContextCNN(nn.Module):
+    def __init__(self):
+        super(ContextCNN, self).__init__()
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.fc1 = nn.Linear(128 * 8 * 8, 512)
+        self.fc2 = nn.Linear(512, 256)
+        self.fc_game = nn.Linear(256, num_game_situations)
+        self.fc_intent = nn.Linear(256, num_intents)
+```
+
+### Input
+- RGB image frames (64x64 pixels)
+- Normalized pixel values
+
+### Output
+- Game situation classification
+- Player intent classification
+
+### Training Process
+1. Data Preparation
+   - Frame extraction from video
+   - Pose estimation
+   - Ball detection
+   - Annotation generation
+
+2. Model Training
+   - Cross-entropy loss
+   - Adam optimizer
+   - Learning rate scheduling
+   - Early stopping
+
+3. Evaluation
+   - Validation accuracy
+   - Confusion matrix
+   - ROC curves
+
+## 2. Pose Estimation Model
+
+### Architecture
+- Pre-trained ResNet50 backbone
+- Custom head for keypoint detection
+- Multi-task learning for pose and orientation
+
+### Input
+- RGB image frames
+- Player bounding boxes
+
+### Output
+- Keypoint coordinates
+- Body orientation
+- Hand positions
+
+## 3. Ball Detection Model
+
+### Architecture
+- YOLOv5-based detector
+- Custom training for ball detection
+- Confidence thresholding
+
+### Input
+- RGB image frames
+- Region of interest
+
+### Output
+- Ball position
+- Detection confidence
+- Ball trajectory
+
+## Model Integration
+
+### Pipeline Flow
+1. Frame Preprocessing
+   - Image resizing
+   - Normalization
+   - Region extraction
+
+2. Model Inference
+   - Parallel processing
+   - Result aggregation
+   - Confidence scoring
+
+3. Decision Making
+   - Rule application
+   - Context analysis
+   - Final classification
+
+## Performance Metrics
+
+### Context Analysis Model
+- Accuracy: >90%
+- Precision: >85%
+- Recall: >88%
+- F1 Score: >86%
 
 ### Pose Estimation Model
-The pose estimation model is responsible for detecting the position and movement of players' limbs during a match. It analyzes video frames to identify hand positions and limb angles, which are crucial for determining whether a handball incident occurred.
+- Keypoint accuracy: >95%
+- Orientation accuracy: >90%
+- Inference time: <50ms
 
-- Model Type: Pre-trained model using MediaPipe for pose estimation.
-- Input: Video frames of the match.
-- Output: Hand position (natural or unnatural), limb angles (elbow, shoulder).
-- Purpose: To detect the likelihood of handball incidents based on player pose.
+### Ball Detection Model
+- Detection accuracy: >95%
+- False positive rate: <2%
+- Inference time: <30ms
 
-### Ball Contact Detection Model
-The ball contact detection model analyzes sensor data to determine if a player has made contact with the ball. It calculates impact force and the duration of contact to assess the severity of the interaction.
+## Model Deployment
 
-- Model Type: Custom model trained on sensor data (e.g., impact force, contact duration).
-- Input: Sensor data from smart balls or other tracking devices.
-- Output: Contact status (true/false), impact force, contact duration.
-- Purpose: To detect whether a handball occurred based on physical interaction with the ball.
+### Requirements
+- CUDA-capable GPU
+- PyTorch 1.9+
+- OpenCV 4.5+
+- Python 3.8+
 
-### Event Context Classification Model
-The event context classification model evaluates the situation surrounding the handball incident, including the likelihood of a rule violation and whether the handball was accidental or intentional.
+### Configuration
+```python
+{
+    "model_path": "models/context_cnn.pth",
+    "batch_size": 32,
+    "confidence_threshold": 0.7,
+    "device": "cuda"
+}
+```
 
-- Model Type: Classification model using Scikit-learn or TensorFlow.
-- Input: Handball decision context (e.g., handball type: intentional or accidental), certainty score.
-- Output: Classification of handball decision (intentional or accidental), rule violation status.
-- Purpose: To provide context around the handball, aiding in decision-making.
+## Best Practices
 
-## Training and Evaluation
-The MVP currently uses pre-trained models, which are fine-tuned on the match data. The training process focuses on optimizing the models for accuracy in real-world scenarios while ensuring that they run efficiently in the system.
+### Model Training
+1. Data Quality
+   - High-resolution video
+   - Diverse scenarios
+   - Accurate annotations
 
-### Model Training Process
-1. Data Collection: The models are trained on a combination of synthetic data (generated through simulations) and real match data (when available).
-2. Model Fine-tuning: Pre-trained models, such as those from MediaPipe, are fine-tuned to handle the specific types of pose estimation relevant to football.
-3. Cross-validation: A cross-validation process is used to ensure the models generalize well across various matches and scenarios.
-4. Performance Metrics: The models are evaluated based on key performance indicators (KPIs) such as accuracy, precision, recall, and F1 score.
+2. Training Process
+   - Regular validation
+   - Model checkpointing
+   - Hyperparameter tuning
+
+3. Evaluation
+   - Cross-validation
+   - Real-world testing
+   - Performance monitoring
 
 ### Model Deployment
-The models are deployed as part of the Raasid API, where they can be queried in real time during a match. The FastAPI backend handles the requests to the models, processes the inputs, and returns the decision outcomes.
+1. Version Control
+   - Model versioning
+   - Configuration tracking
+   - Change logging
 
-- Deployment Framework: FastAPI for real-time processing and serving.
-- Model Loading: Pre-trained models are loaded into memory when the system starts, ensuring fast access during live matches.
-- Scalability: The models are designed to run efficiently, allowing the system to scale as more matches are analyzed simultaneously.
+2. Monitoring
+   - Performance metrics
+   - Error tracking
+   - Resource usage
 
-## Future Enhancements
-The current AI models are effective for detecting handball incidents in real time, but several enhancements are planned for future versions:
+3. Updates
+   - Regular retraining
+   - Performance optimization
+   - Bug fixes
 
-- Model Expansion: Additional models for detecting other football-related incidents (e.g., offside detection).
-- Improved Accuracy: Ongoing model improvement through new data collection and continuous fine-tuning.
-- Real-Time Model Training: Integration of online learning techniques to enable the models to adapt in real-time during live matches.
+## Troubleshooting
+
+### Common Issues
+1. Training
+   - Overfitting
+   - Underfitting
+   - Training instability
+
+2. Inference
+   - Memory issues
+   - Performance degradation
+   - False positives/negatives
+
+3. Deployment
+   - Model loading errors
+   - Compatibility issues
+   - Resource constraints
+
+### Solutions
+1. Training Issues
+   - Data augmentation
+   - Regularization
+   - Learning rate adjustment
+
+2. Inference Issues
+   - Batch size optimization
+   - Memory management
+   - Hardware acceleration
+
+3. Deployment Issues
+   - Version compatibility
+   - Resource allocation
+   - Error handling
 
 ## Technology Used
 - Pose Estimation: MediaPipe (pre-trained model for pose detection).

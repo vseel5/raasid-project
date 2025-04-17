@@ -8,13 +8,59 @@ import numpy as np
 import tempfile
 from fpdf import FPDF
 from datetime import datetime
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+import logging
+import sys
+
+# Load environment variables
+load_dotenv()
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler('logs/dashboard.log')
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# Configuration
+class Config:
+    API_BASE_URL = os.getenv('API_BASE_URL', 'http://127.0.0.1:8000')
+    UPLOAD_ENDPOINT = f"{API_BASE_URL}/upload"
+    PROCESS_ENDPOINT = f"{API_BASE_URL}/process"
+    STATUS_ENDPOINT = f"{API_BASE_URL}/status"
+    MAX_RETRIES = int(os.getenv('MAX_RETRIES', 3))
+    RETRY_DELAY = int(os.getenv('RETRY_DELAY', 1))
+    TIMEOUT = int(os.getenv('REQUEST_TIMEOUT', 30))
 
 # --- Page Configuration ---
-st.set_page_config(page_title="Raasid AI Dashboard", layout="wide")
+st.set_page_config(
+    page_title="Raasid AI Dashboard",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/your-repo/raasid',
+        'Report a bug': 'https://github.com/your-repo/raasid/issues',
+        'About': 'AI-powered handball detection system for football officiating'
+    }
+)
 
 # --- Session State Initialization ---
 if "decision_history" not in st.session_state:
     st.session_state.decision_history = []
+if "video_id" not in st.session_state:
+    st.session_state.video_id = None
+if "process_id" not in st.session_state:
+    st.session_state.process_id = None
+if "ai_result" not in st.session_state:
+    st.session_state.ai_result = None
+if "distribution_output" not in st.session_state:
+    st.session_state.distribution_output = None
 
 # --- Styling ---
 st.markdown("""
@@ -59,91 +105,173 @@ hr {
     font-size: 13px;
     color: #6C757D;
 }
+.error-message {
+    color: #DC3545;
+    background-color: #F8D7DA;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.success-message {
+    color: #28A745;
+    background-color: #D4EDDA;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# --- Configuration ---
-BACKEND_URL = "http://127.0.0.1:8000/real_time_decision"  # Endpoint for real-time decision data
+def make_request(method: str, url: str, **kwargs) -> requests.Response:
+    """Make an HTTP request with retry logic."""
+    for attempt in range(Config.MAX_RETRIES):
+        try:
+            response = requests.request(
+                method,
+                url,
+                timeout=Config.TIMEOUT,
+                **kwargs
+            )
+            response.raise_for_status()
+            return response
+        except requests.exceptions.RequestException as e:
+            if attempt == Config.MAX_RETRIES - 1:
+                logger.error(f"Request failed after {Config.MAX_RETRIES} attempts: {e}")
+                raise
+            logger.warning(f"Request attempt {attempt + 1} failed: {e}")
+            time.sleep(Config.RETRY_DELAY)
 
-# --- Function to Fetch Real-Time Data from Backend ---
-def get_real_time_data():
+def upload_video(video_file) -> dict:
+    """Upload video to the API server."""
     try:
-        response = requests.get(f"{BACKEND_URL}")
-        if response.status_code == 200:
-            return response.json()  # Assuming backend sends real-time data in JSON format
-        else:
-            st.error("Failed to fetch data from backend")
-            return None
+        files = {'video': video_file}
+        response = make_request('POST', Config.UPLOAD_ENDPOINT, files=files)
+        return response.json()['data']
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error uploading video: {e}")
+        st.error(f"Upload failed: {str(e)}")
+        return None
     except Exception as e:
-        st.error(f"Error fetching real-time data: {e}")
+        logger.error(f"Unexpected error during upload: {e}")
+        st.error("An unexpected error occurred during upload")
         return None
 
-# --- Display Real-Time Decision Data ---
+def process_video(video_id: str) -> dict:
+    """Start video processing."""
+    try:
+        response = make_request('POST', f"{Config.PROCESS_ENDPOINT}/{video_id}")
+        return response.json()['data']
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error processing video: {e}")
+        st.error(f"Processing failed: {str(e)}")
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error during processing: {e}")
+        st.error("An unexpected error occurred during processing")
+        return None
+
+def get_processing_status(process_id: str) -> dict:
+    """Get video processing status."""
+    try:
+        response = make_request('GET', f"{Config.STATUS_ENDPOINT}/{process_id}")
+        return response.json()['data']
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error checking status: {e}")
+        st.error(f"Status check failed: {str(e)}")
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error during status check: {e}")
+        st.error("An unexpected error occurred while checking status")
+        return None
+
+def get_real_time_data() -> dict:
+    """Fetch real-time data from backend."""
+    try:
+        response = make_request('GET', f"{Config.API_BASE_URL}/real_time_decision")
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching real-time data: {e}")
+        st.error("Failed to fetch data from backend")
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error fetching real-time data: {e}")
+        st.error("An unexpected error occurred while fetching data")
+        return None
+
 def display_real_time_decisions():
+    """Display real-time decision updates."""
     st.title("Real-Time Decision Updates")
-    decision_display = st.empty()  # Placeholder for real-time updates
+    decision_display = st.empty()
     
     while True:
-        data = get_real_time_data()  # Fetch real-time data from backend
+        data = get_real_time_data()
         if data:
-            decision_display.write(f"Frame: {data['frame']} | Decision: {data['final_decision']} | Confidence: {data['certainty_score']}%")
+            decision_display.write(
+                f"Frame: {data['frame']} | "
+                f"Decision: {data['final_decision']} | "
+                f"Confidence: {data['certainty_score']}%"
+            )
         
-        time.sleep(1)  # Update every second to simulate real-time data
+        time.sleep(1)
         if st.button('Stop'):
-            break  # Allow user to stop the display loop if needed
+            break
 
-# --- PDF Generation Function ---
-def generate_pdf_report(decision_data, distribution_data, file_name="decision_report.pdf"):
-    # Create PDF instance
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
+def generate_pdf_report(decision_data: dict, distribution_data: dict, file_name: str = "decision_report.pdf") -> str:
+    """Generate PDF report from decision and distribution data."""
+    try:
+        pdf = FPDF()
+        pdf.set_auto_page_break(auto=True, margin=15)
+        pdf.add_page()
 
-    # Add title
-    pdf.set_font("Arial", size=16, style='B')
-    pdf.cell(200, 10, txt="Raasid AI Decision Report", ln=True, align="C")
+        # Add title
+        pdf.set_font("Arial", size=16, style='B')
+        pdf.cell(200, 10, txt="Raasid AI Decision Report", ln=True, align="C")
 
-    # Add metadata
-    pdf.ln(10)  # Line break
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Generated on: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ln=True)
-    pdf.cell(200, 10, txt="Distribution ID: " + distribution_data.get("distribution_id", "N/A"), ln=True)
+        # Add metadata
+        pdf.ln(10)
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt="Generated on: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ln=True)
+        pdf.cell(200, 10, txt="Distribution ID: " + distribution_data.get("distribution_id", "N/A"), ln=True)
 
-    # Add Decision Summary
-    pdf.ln(10)
-    pdf.set_font("Arial", size=14, style='B')
-    pdf.cell(200, 10, txt="Decision Summary", ln=True)
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, f"""
-    Handball Detected: {'Yes' if decision_data.get('handball_detected') else 'No'}
-    Intentional: {'Yes' if decision_data.get('intentional') else 'No'}
-    Confidence Score: {decision_data.get('confidence_score', 'N/A')}%
-    Contact Duration: {decision_data.get('contact_duration', 'N/A')}s
-    Impact Force: {decision_data.get('impact_force', 'N/A')} N
-    Pose Unusual: {'Yes' if decision_data.get('pose_unusual') else 'No'}
-    """)
+        # Add Decision Summary
+        pdf.ln(10)
+        pdf.set_font("Arial", size=14, style='B')
+        pdf.cell(200, 10, txt="Decision Summary", ln=True)
+        pdf.set_font("Arial", size=12)
+        pdf.multi_cell(0, 10, f"""
+        Handball Detected: {'Yes' if decision_data.get('handball_detected') else 'No'}
+        Intentional: {'Yes' if decision_data.get('intentional') else 'No'}
+        Confidence Score: {decision_data.get('confidence_score', 'N/A')}%
+        Contact Duration: {decision_data.get('contact_duration', 'N/A')}s
+        Impact Force: {decision_data.get('impact_force', 'N/A')} N
+        Pose Unusual: {'Yes' if decision_data.get('pose_unusual') else 'No'}
+        """)
 
-    # Add Distribution Details
-    pdf.ln(10)
-    pdf.set_font("Arial", size=14, style='B')
-    pdf.cell(200, 10, txt="Distribution Summary", ln=True)
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, f"""
-    Timestamp: {distribution_data.get('timestamp', 'N/A')}
-    Delivered To: {', '.join(distribution_data.get('delivered_to', []))}
-    """)
+        # Add Distribution Details
+        pdf.ln(10)
+        pdf.set_font("Arial", size=14, style='B')
+        pdf.cell(200, 10, txt="Distribution Summary", ln=True)
+        pdf.set_font("Arial", size=12)
+        pdf.multi_cell(0, 10, f"""
+        Timestamp: {distribution_data.get('timestamp', 'N/A')}
+        Delivered To: {', '.join(distribution_data.get('delivered_to', []))}
+        """)
 
-    # Add Decision Data (JSON)
-    pdf.ln(10)
-    pdf.set_font("Arial", size=14, style='B')
-    pdf.cell(200, 10, txt="Full Decision Data (JSON)", ln=True)
-    pdf.set_font("Arial", size=10)
-    json_data = json.dumps(decision_data, indent=4)
-    pdf.multi_cell(0, 10, json_data)
+        # Add Decision Data (JSON)
+        pdf.ln(10)
+        pdf.set_font("Arial", size=14, style='B')
+        pdf.cell(200, 10, txt="Full Decision Data (JSON)", ln=True)
+        pdf.set_font("Arial", size=10)
+        json_data = json.dumps(decision_data, indent=4)
+        pdf.multi_cell(0, 10, json_data)
 
-    # Save the PDF
-    pdf.output(file_name)
-    return file_name
+        # Save the PDF
+        pdf.output(file_name)
+        return file_name
+    except Exception as e:
+        logger.error(f"Error generating PDF report: {e}")
+        st.error("Failed to generate PDF report")
+        return None
 
 # --- Header ---
 st.markdown("""
@@ -155,62 +283,70 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# --- Run Full Simulation ---
-if st.button("Run Full Simulation"):
-    with st.spinner("Running complete AI pipeline..."):
-        success = run_full_simulation()
-        if success:
-            st.success("Simulation and distribution complete!")
-            # Generate PDF report after successful simulation
-            pdf_file = generate_pdf_report(st.session_state.ai_result, st.session_state.distribution_output)
-            
-            # Provide the download link in Streamlit interface
-            with open(pdf_file, "rb") as f:
-                st.download_button(
-                    label="Download PDF Report",
-                    data=f,
-                    file_name=pdf_file,
-                    mime="application/pdf"
-                )
-            st.rerun()
-
 # --- Tabs Layout ---
 tab1, tab2, tab3 = st.tabs(["Upload Snippet", "AI Analysis", "Final Decision Distribution"])
 
 # --- Upload Snippet ---
 with tab1:
     st.markdown('<h3 style="color:#004085;">Upload Match Snippet</h3>', unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("Upload image or video snippet", type=["jpg", "png", "mp4"])
+    uploaded_file = st.file_uploader(
+        "Upload video snippet",
+        type=["mp4", "avi", "mov", "mkv"],
+        help="Upload a video file for analysis. Supported formats: MP4, AVI, MOV, MKV"
+    )
 
-    def send_post_request(endpoint, payload):
-        try:
-            res = requests.post(endpoint, json=payload)
-            res.raise_for_status()
-            return res.json().get("result", {})
-        except Exception as e:
-            st.error(f"API call to {endpoint} failed: {e}")
-            return {}
+    if uploaded_file is not None:
+        # Display video information
+        file_details = {
+            "Filename": uploaded_file.name,
+            "File size": f"{uploaded_file.size / (1024*1024):.2f} MB",
+            "File type": uploaded_file.type
+        }
+        st.json(file_details)
 
-    result = None
-    if uploaded_file:
-        if uploaded_file.type.startswith("video"):
-            st.video(uploaded_file)
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp_file:
-                tmp_file.write(uploaded_file.read())
-                tmp_file_path = tmp_file.name
+        # Upload button
+        if st.button("Upload Video", key="upload_button"):
+            with st.spinner("Uploading video..."):
+                result = upload_video(uploaded_file)
+                if result:
+                    st.success("Video uploaded successfully!")
+                    st.session_state['video_id'] = result['video_id']
+                    st.json(result)
 
-            video = cv2.VideoCapture(tmp_file_path)
-            ret, frame = video.read()
-            if ret:
-                image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-                st.image(image, use_container_width=True)
-                pose_features = run_full_simulation()  # reuse if needed
-            else:
-                st.error("Could not read the video frame.")
-        else:
-            img = Image.open(uploaded_file)
-            st.image(img, use_container_width=True)
-            st.warning("Simulated image-based uploads are currently static.")
+        # Processing section
+        if 'video_id' in st.session_state:
+            if st.button("Start Processing", key="process_button"):
+                with st.spinner("Processing video..."):
+                    result = process_video(st.session_state['video_id'])
+                    if result:
+                        st.success("Processing started!")
+                        st.session_state['process_id'] = result['processing_id']
+                        st.json(result)
+
+        # Status monitoring section
+        if 'process_id' in st.session_state:
+            st.header("Processing Status")
+            
+            # Create a placeholder for the status
+            status_placeholder = st.empty()
+            
+            # Add a refresh button
+            if st.button("Refresh Status", key="status_button"):
+                with st.spinner("Checking status..."):
+                    status = get_processing_status(st.session_state['process_id'])
+                    if status:
+                        status_placeholder.json(status)
+                        
+                        # Show progress bar if available
+                        if 'progress' in status:
+                            st.progress(status['progress'] / 100)
+                        
+                        # Show results if processing is complete
+                        if status.get('status') == 'completed':
+                            st.success("Processing completed!")
+                            if 'results' in status:
+                                st.session_state['ai_result'] = status['results']
+                                st.json(status['results'])
 
 # --- AI Analysis ---
 with tab2:
@@ -266,15 +402,16 @@ with tab2:
 with tab3:
     st.markdown('<h3 style="color:#004085;">Distribute Final Decision</h3>', unsafe_allow_html=True)
 
-    if st.button("Distribute to Referee Systems"):
+    if st.button("Distribute to Referee Systems", key="distribute_button"):
         with st.spinner("Distributing to all endpoints..."):
             try:
-                response = requests.post("http://127.0.0.1:8000/output_distribution")
+                response = make_request('POST', f"{Config.API_BASE_URL}/output_distribution")
                 response.raise_for_status()
                 output_response = response.json()
                 st.session_state["distribution_output"] = output_response
                 st.success("Distribution completed successfully!")
             except requests.exceptions.RequestException as e:
+                logger.error(f"Distribution failed: {e}")
                 st.error(f"Distribution failed: {e}")
 
     if "distribution_output" in st.session_state:
@@ -303,6 +440,7 @@ with tab3:
                         mime="application/json"
                     )
             except FileNotFoundError:
+                logger.error(f"Report file not found: {report_path}")
                 st.warning("Report file not found on the server.")
 
 # --- Decision History ---

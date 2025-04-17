@@ -1,0 +1,69 @@
+{
+    "offside": {
+        "description": "A player is in an offside position if they are nearer to the opponents' goal line than both the ball and the second-last opponent.",
+        "criteria": [
+            "Player position relative to ball",
+            "Player position relative to second-last opponent",
+            "Player position relative to goal line",
+            "Active involvement in play"
+        ],
+        "exceptions": [
+            "Player is in their own half",
+            "Player receives the ball directly from a goal kick, corner kick, or throw-in"
+        ]
+    },
+    "foul": {
+        "description": "A foul is an unfair act by a player that interferes with the active play of the game.",
+        "types": [
+            {
+                "name": "Direct Free Kick Fouls",
+                "examples": [
+                    "Kicking or attempting to kick an opponent",
+                    "Tripping or attempting to trip an opponent",
+                    "Jumping at an opponent",
+                    "Charging an opponent",
+                    "Striking or attempting to strike an opponent",
+                    "Pushing an opponent",
+                    "Tackling an opponent"
+                ]
+            },
+            {
+                "name": "Indirect Free Kick Fouls",
+                "examples": [
+                    "Playing in a dangerous manner",
+                    "Impeding the progress of an opponent",
+                    "Preventing the goalkeeper from releasing the ball",
+                    "Committing any other offense not previously mentioned"
+                ]
+            }
+        ]
+    },
+    "handball": {
+        "description": "It is an offense if a player deliberately touches the ball with their hand/arm.",
+        "criteria": [
+            "Deliberate movement of hand/arm towards the ball",
+            "Making the body unnaturally bigger",
+            "Hand/arm position in relation to body movement",
+            "Distance between opponent and ball"
+        ],
+        "exceptions": [
+            "Ball touches hand/arm directly from player's own head/body/foot",
+            "Ball touches hand/arm of player in natural position",
+            "Ball touches hand/arm of player falling to ground"
+        ]
+    },
+    "goal": {
+        "description": "A goal is scored when the whole of the ball passes over the goal line, between the goalposts and under the crossbar.",
+        "criteria": [
+            "Ball completely crosses goal line",
+            "Ball between goalposts",
+            "Ball under crossbar",
+            "No infringement of Laws of the Game"
+        ],
+        "verification": [
+            "Goal line technology",
+            "Video Assistant Referee (VAR)",
+            "Assistant referee signal"
+        ]
+    }
+} 

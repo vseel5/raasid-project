@@ -1,83 +1,94 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from typing import Dict, Any, Optional
+import aiohttp
 from api.utils.storage import load_decision_logs, save_decision_logs
-import random
 from api.utils.logger import logger
-import requests
+from pydantic import BaseModel
 
 # Initialize router
 router = APIRouter()
 
-# Function to log the decision
-def log_decision(frame_number, hand_position, certainty_score, var_review_status):
-    # Load existing logs (from S3 or local)
-    logs = load_decision_logs()
+class DecisionLog(BaseModel):
+    frame: int
+    hand_position: str
+    certainty_score: float
+    var_review_status: bool
 
-    # Create a new decision log entry
-    decision = {
-        "frame": frame_number,
-        "hand_position": hand_position,
-        "certainty_score": certainty_score,
-        "VAR_review": var_review_status
-    }
-
-    # Append the new decision to the list of logs
-    logs.append(decision)
-
-    # Save the updated logs to S3 or local storage
-    save_decision_logs(logs)
-    logger.info(f"Decision for frame {frame_number} logged successfully.")
-
-# Function to send data to a given endpoint
-def send_post(endpoint: str, payload: dict, action_name: str):
+async def log_decision(
+    frame_number: int,
+    hand_position: str,
+    certainty_score: float,
+    var_review_status: bool
+) -> None:
     """
-    Function to send a POST request to the given endpoint with the payload.
-    Logs the result of the request.
-
+    Log a decision for a specific frame.
+    
     Args:
-    - endpoint (str): The API endpoint to which the data will be sent.
-    - payload (dict): The data to be sent in the POST request.
-    - action_name (str): The action name for logging purposes.
+        frame_number: The frame number
+        hand_position: The detected hand position
+        certainty_score: The certainty score of the decision
+        var_review_status: Whether VAR review is required
     """
     try:
-        # Sending the POST request to the specified endpoint
-        response = requests.post(endpoint, json=payload)
+        logs = await load_decision_logs()
+        
+        if not isinstance(logs, list):
+            raise ValueError("Loaded logs are not in the expected list format.")
+        
+        decision = DecisionLog(
+            frame=frame_number,
+            hand_position=hand_position,
+            certainty_score=certainty_score,
+            var_review_status=var_review_status
+        )
 
-        # Check if the request was successful
-        response.raise_for_status()
+        logs.append(decision.dict())
+        await save_decision_logs(logs)
+        logger.info(f"Decision for frame {frame_number} logged successfully.")
+    except Exception as e:
+        logger.error(f"Failed to log decision for frame {frame_number}: {e}")
+        raise
 
-        # Log the response data
-        logger.info(f"{action_name} request to {endpoint} was successful. Response: {response.json()}")
-    except requests.exceptions.RequestException as e:
-        # Log any errors that occur during the request
-        logger.error(f"Error sending {action_name} request to {endpoint}: {e}")
-
-# Decision-making endpoint
-@router.post("/decision_making_ai")
-async def decision_making(data: dict):
+async def send_post(endpoint: str, payload: Dict[str, Any], action_name: str) -> Dict[str, Any]:
     """
-    Handle decision-making logic (simulated handball detection logic).
-    Logs the decision to S3 or local storage.
-    """
-    frame_number = data['frame']
-    hand_position = data['hand_position']
-    certainty_score = random.uniform(85, 100)  # Example score between 85 and 100
-    var_review_status = certainty_score < 95  # Assume VAR review is triggered for low confidence
-
-    # Call log_decision to save the decision
-    log_decision(frame_number=frame_number, 
-                 hand_position=hand_position, 
-                 certainty_score=certainty_score, 
-                 var_review_status=var_review_status)
-
-    # Additional logic for sending decision or processing (optional)
-    decision_result = {
-        "frame": frame_number,
-        "final_decision": "Handball Violation" if certainty_score > 90 else "No Handball",
-        "certainty_score": certainty_score,
-        "VAR_review": var_review_status
-    }
+    Send a POST request to the given endpoint with the payload.
     
-    # Send the decision to the endpoint for processing or display
-    send_post("/decision_making_ai", decision_result, "Final Decision")
+    Args:
+        endpoint: The API endpoint to send the request to
+        payload: The data to send in the request
+        action_name: Name of the action for logging purposes
+        
+    Returns:
+        The response data from the endpoint
+    """
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(endpoint, json=payload) as response:
+                if response.status != 200:
+                    error_msg = f"Failed to {action_name}. Status: {response.status}"
+                    logger.error(error_msg)
+                    raise HTTPException(status_code=response.status, detail=error_msg)
+                
+                return await response.json()
+    except Exception as e:
+        logger.error(f"Error during {action_name}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
-    return decision_result
+@router.post("/decision_making_ai")
+async def decision_making(data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Process decision making data and return the result.
+    
+    Args:
+        data: The input data for decision making
+        
+    Returns:
+        The decision making result
+    """
+    try:
+        # Process the decision making data
+        result = await process_decision_data(data)
+        return {"status": "success", "result": result}
+    except Exception as e:
+        logger.error(f"Error in decision making: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))

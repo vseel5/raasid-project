@@ -1,70 +1,163 @@
-# AI Training Pipeline
+# AI Training Pipeline Documentation
 
 ## Overview
-The AI training pipeline for the Raasid system is designed to ensure that the AI models are trained effectively to detect handball incidents with high accuracy. The pipeline covers data collection, preprocessing, model training, evaluation, and deployment. The goal of the pipeline is to maintain high performance, scalability, and accuracy in real-world football scenarios.
+The RAASID system's AI training pipeline consists of three main components:
+1. Data Collection and Preparation
+2. Model Training
+3. Model Evaluation and Deployment
 
-## Pipeline Stages
-The AI training pipeline consists of several stages, each aimed at improving the model's accuracy and reliability. Below is a detailed description of each stage:
+## 1. Data Collection and Preparation
 
-### 1. Data Collection
-The first step in the training pipeline is data collection. The system relies on two main types of data sources:
+### Data Collection Script
+The `collect_training_data.py` script handles the collection and preparation of training data:
 
-- Synthetic Data: Generated through simulations to model various handball scenarios, including different player poses, ball trajectories, and rule violations.
-- Real Match Data: Collected from actual football matches, providing ground truth data for training and testing the models. This data includes video footage and sensor data (e.g., impact force, ball contact duration).
+```python
+python api/training/collect_training_data.py
+```
 
-The data is labeled to indicate whether a handball occurred, the context of the handball, and the intent behind the action (intentional or accidental).
+#### Key Features:
+- Video frame processing at configurable intervals
+- Automatic pose estimation and ball detection
+- Structured annotation generation
+- Train/validation split (80/20)
+- Error handling and logging
 
-### 2. Data Preprocessing
-Data preprocessing is crucial for preparing the collected data for training. This step includes:
+#### Configuration:
+```python
+config = {
+    'video_path': 'data/videos/handball_incident.mp4',
+    'output_dir': 'data/training',
+    'game_situation': 'defensive_block',
+    'player_intent': 'deliberate',
+    'frame_interval': 30
+}
+```
 
-- Normalization: Scaling input data to a consistent range to ensure uniformity across different data types.
-- Data Augmentation: Generating variations of the original data (e.g., rotating images, varying lighting conditions) to improve model generalization.
-- Feature Engineering: Extracting relevant features from raw sensor data and video frames, such as limb angles, impact force, and handball context.
+### Data Structure
+The collected data is stored in the following format:
+```
+data/training/
+├── images/
+│   └── frame_*.jpg
+├── train_annotations.json
+└── val_annotations.json
+```
 
-Preprocessing helps reduce noise and prepares the data for optimal model training.
+#### Annotation Format:
+```json
+{
+    "image_path": "images/frame_123.jpg",
+    "frame_number": 123,
+    "game_situation": "defensive_block",
+    "player_intent": "deliberate",
+    "pose_data": {
+        "keypoints": [...],
+        "hand_positions": [...],
+        "body_orientation": [...]
+    },
+    "ball_position": [x, y]
+}
+```
 
-### 3. Model Training
-The training stage focuses on optimizing the models to detect handball incidents accurately. The key models trained in this pipeline are:
+## 2. Model Training
 
-- Pose Estimation Model: Trained to detect hand positions and limb angles to assess the likelihood of a handball.
-- Ball Contact Detection Model: Trained to analyze sensor data and determine the severity of ball contact.
-- Event Context Classification Model: Trained to classify the handball incident as intentional or accidental, and assess rule violations.
+### Training Script
+The `train_context_model.py` script handles model training:
 
-Each model is trained using supervised learning techniques, with labeled data to guide the training process. The models are optimized using performance metrics like accuracy, precision, recall, and F1 score.
+```python
+python api/training/train_context_model.py
+```
 
-### 4. Model Evaluation
-Model evaluation ensures that the trained models perform well in real-world scenarios. The evaluation stage includes:
+#### Key Features:
+- Custom HandballDataset class for data loading
+- Configurable training parameters
+- Automatic model checkpointing
+- Training progress logging
+- GPU support (if available)
 
-- Cross-validation: A technique used to assess the model's generalization ability by testing it on different subsets of data.
-- Performance Metrics: Metrics such as accuracy, precision, recall, F1 score, and confusion matrix are used to evaluate the models' performance.
-- A/B Testing: Comparing different versions of models to select the best-performing one for deployment.
+#### Configuration:
+```python
+config = {
+    'data_dir': 'data/training',
+    'model_save_path': 'models/context_cnn.pth',
+    'num_epochs': 50,
+    'batch_size': 32,
+    'learning_rate': 0.001
+}
+```
 
-The goal is to ensure the models can make accurate handball decisions under varying conditions.
+### Training Process
+1. Data Loading and Preprocessing
+   - Image resizing and normalization
+   - Label encoding
+   - Data augmentation
 
-### 5. Model Tuning and Optimization
-After the initial evaluation, the models may require further tuning and optimization to enhance performance:
+2. Model Training
+   - Cross-entropy loss for both game situation and intent classification
+   - Adam optimizer with configurable learning rate
+   - Early stopping based on validation loss
 
-- Hyperparameter Tuning: Adjusting model parameters, such as learning rate, batch size, and the number of layers, to improve accuracy.
-- Model Regularization: Techniques like dropout and L2 regularization are applied to prevent overfitting and improve generalization.
-- Ensemble Methods: Combining the predictions of multiple models to enhance decision-making accuracy.
+3. Model Evaluation
+   - Validation metrics calculation
+   - Best model checkpointing
+   - Training progress visualization
 
-Optimization ensures that the models perform well under real-time match conditions.
+## 3. Model Deployment
 
-### 6. Model Deployment
-Once the models are trained and optimized, they are deployed as part of the Raasid system:
+### Model Integration
+The trained model is integrated into the RAASID system through:
+- `ContextCNN` class in the event context analysis component
+- Automatic model loading during system initialization
+- Real-time inference during game analysis
 
-- Model Integration: The trained models are integrated into the FastAPI backend, where they are called in real time to make decisions during matches.
-- Containerization: The models are packaged into Docker containers to ensure consistency and portability across different environments.
-- Scalability: The system is designed to scale, allowing multiple matches to be processed simultaneously.
+### Performance Monitoring
+- Inference time tracking
+- Accuracy metrics logging
+- Error rate monitoring
 
-Deployment ensures that the models can make real-time handball decisions during matches.
+## Best Practices
 
-## Future Enhancements
-The training pipeline will be enhanced in future iterations of the system:
+### Data Collection
+1. Use high-quality video footage
+2. Ensure diverse game situations
+3. Maintain consistent annotation standards
+4. Regular data validation
 
-- Continuous Learning: Implementing an online learning system to update the models with new data in real time, improving accuracy over time.
-- Automated Data Labeling: Using semi-supervised learning and active learning techniques to automate the labeling of data, reducing the need for manual labeling.
-- Model Versioning: Implementing a version control system for models to track changes and ensure reproducibility of results.
+### Training
+1. Monitor training metrics
+2. Regular model checkpointing
+3. Validation set evaluation
+4. Hyperparameter tuning
+
+### Deployment
+1. Model versioning
+2. Performance benchmarking
+3. Regular model updates
+4. Error tracking and logging
+
+## Troubleshooting
+
+### Common Issues
+1. Data Collection
+   - Video format compatibility
+   - Frame extraction errors
+   - Annotation inconsistencies
+
+2. Training
+   - GPU memory issues
+   - Training instability
+   - Overfitting
+
+3. Deployment
+   - Model loading errors
+   - Inference performance
+   - Memory management
+
+### Solutions
+1. Check system requirements
+2. Verify data integrity
+3. Monitor resource usage
+4. Regular system updates
 
 ## Technology Used
 - Training Frameworks: TensorFlow, Keras, and Scikit-learn for model training and optimization.

@@ -3487,5 +3487,41 @@
         "hand_position": "unnatural",
         "certainty_score": 85.81863592922774,
         "VAR_review": true
+    },
+    {
+        "frame": 101,
+        "hand_position": "unnatural",
+        "certainty_score": 95.0,
+        "VAR_review": false
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": true
+    },
+    {
+        "frame": 123,
+        "hand_position": "unnatural",
+        "certainty_score": 96.0,
+        "VAR_review": true
     }
 ]
